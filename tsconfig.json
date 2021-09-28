@@ -5,7 +5,6 @@
     "target": "es5",
     "outDir": "dist",
     "moduleResolution": "node",
-    "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noUnusedLocals": true,
@@ -14,7 +13,9 @@
     "downlevelIteration": true,
     "sourceMap": true,
     "declaration": true,
-    "importHelpers": true
+    "importHelpers": true,
+    "resolveJsonModule": true,
+    "strict": false,
   },
   "include": [
     "src/**/*.ts"

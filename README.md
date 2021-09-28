@@ -1,9 +1,10 @@
 # next-typed-api-routes
 
-Write a `Schema` interface in your API route file, and the library gives you
+Write a `Schema` interface in your API route file, and you get
 
-- route parameters type check, completion and validation
+- route parameters validation and type completion
 - typed API clients
+- faster JSON response serialization
 
 all at one command!
 
@@ -15,23 +16,71 @@ all at one command!
 npm install --save next-typed-api-routes
 ```
 
-2. Create a API route `src/pages/api/tscheck.ts` with the following content
+2. Create a API route `src/pages/api/testapi.ts` with the following content
 
 ```ts
+import { route } from "next-typed-api-routes";
+
+interface Value {
+  articleId: number;
+}
+
+export interface TestApiSchema {
+  method: "POST";
+
+  query: {
+    a?: string | number;
+  };
+
+  body: {
+    test: string;
+  };
+
+  responses: {
+    200: { test: string; }
+    403: { testA: string; }
+  }
+}
+
+export default route<TestApiSchema>("TestApiSchema", async (req) => {
+  const { a } = req.query;
+  const { test } = req.body;
+
+  return { 200: { test: test + "" + a } };
+});
 ```
 
-3. Run `npx ntar sync`
+3. Add the following into the `scripts` section of your `package.json` to run `ntar schema` after `npm install`
 
-Several files will be generated at `src/apis`. Make sure removing the dir if it already exists.
+```json
+"postinstall": "ntar schema"
+```
+
+4. Run `npx ntar schema && npx ntar client`
+
+a `src/apis/api.ts` file will be generated at `src/apis`.
+
+5. Import the `realApis` variable from `src/apis/api.ts` to use the client.
+
+```ts
+import { realApis } from "src/apis";
+
+realApis.testApi({ query: {}, body: { test: "123" } })
+  .then(({ test }) => { console.log(test)});
+```
 
 # Updating existing API Routes
 
-To convert a normal API Routes to a type checked one, do the following:
+To convert a normal API Routes to a type checked one, all you need to do is
 
-1. Write a `Schema` interface
-2. Wrap the handle with `route` function and specify the name of Schema interface as the type argument and first argument
+1. Write a valid `Schema` interface
+2. Wrap the handler function with `route` function, specify the name of Schema interface as the type argument and first argument
 
 The Get Started part provides an example of a correctly formatted API route file. `ntar` will report errors if Incorrect route file is found.
+
+Run `ntar schema` when the `Schema` interface is changed.
+
+Run `ntar client` when the HTTP method or URL or the name of schema is changed.
 
 # Schema Interface Specification
 
@@ -40,11 +89,11 @@ The shape of Schema interface is defined as follows:
 ```ts
 // The name of the schema must be unique across the whole project
 interface TestSchema {
-  // Required. Must be a valid string literal type of HTTP method
+  // Required. Must be a valid CAPITALIZED string literal type of HTTP method (GET, POST, PATCH)
   method: "POST";
 
-  // Optional. Define the querystring
-  querystring: {
+  // Optional. Define the path param and query (to align with next.js)
+  query: {
     // Supports most type constructs
     property?: string | number | AnotherInterface | Pick<{ number: string }, "number">;
     
@@ -81,11 +130,12 @@ interface TestSchema {
 
 - [`Ajv`](https://ajv.js.org/) for JSON Schema validation
 - [`vega/ts-json-schema-generator`](https://github.com/vega/ts-json-schema-generator) for generating json schema from typescript
+- [`fast-json-stringify`](https://github.com/fastify/fast-json-stringify) for faster JSON response serialization
+- [`fastify`](https://github.com/fastify/fastify) for inspiration or unified validation and serialization using JSON schema
 
 # Roadmap
 
-- [] Configurations for output dirs etc
-- [] Faster JSON Stringify using [`fastify/fast-json-stringify`](https://github.com/fastify/fast-json-stringify)
+- [] More configurations
 
 # License
 
