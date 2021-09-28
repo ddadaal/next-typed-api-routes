@@ -1,0 +1,44 @@
+{
+  "name": "next-typed-api-routes",
+  "version": "1.0.0",
+  "description": "Make Next.js API Routes strongly typed with routes and clients type completion and auto-generated parameter validation",
+  "type": "module",
+  "source": "src/index.ts",
+  "exports": "./dist/index.modern.js",
+  "main": "dist/index.cjs",
+  "module": "dist/index.module.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "ntar": "dist/cli.js"
+  },
+  "scripts": {
+    "build": "microbundle src/index.ts src/cli.ts --jsx React.createElement",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ddadaal/next-typed-api-routes.git"
+  },
+  "keywords": [
+    "nextjs",
+    "typescript"
+  ],
+  "author": "Chen Junda",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ddadaal/next-typed-api-routes/issues"
+  },
+  "homepage": "https://github.com/ddadaal/next-typed-api-routes#readme",
+  "devDependencies": {
+    "@types/node": "^16.10.1",
+    "typescript": "^4.4.3",
+    "eslint": "7.32.0",
+    "eslint-plugin-react": "7.26.0",
+    "@types/jest": "27.0.2",
+    "@typescript-eslint/eslint-plugin": "4.32.0",
+    "@typescript-eslint/parser": "4.32.0"
+  },
+  "dependencies": {
+    "yargs": "^17.2.1"
+  }
+}
