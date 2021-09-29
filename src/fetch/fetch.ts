@@ -93,6 +93,91 @@ function checkIsJson(resp: Response) {
   return type && type.includes("application/json");
 }
 
+type RejectHandler<TRej> = (reason: any) => TRej | PromiseLike<TRej>;
+
+class JsonFetchResultPromiseLike<T extends GeneralSchema>
+implements PromiseLike<SuccessResponse<T>> {
+
+  private promise: Promise<Response>;
+  private httpErrorHandler: Map<number, (error: HttpError) => void>;
+
+
+  constructor(
+    promise: Promise<Response>,
+  ) {
+    this.promise = promise;
+    this.httpErrorHandler = new Map();
+  }
+
+  then<TSuc = T, TRej = never>(
+    onfulfilled?: ((value: SuccessResponse<T>) => TSuc | PromiseLike<TSuc>) | null,
+    onrejected?: ((reason: any) => TRej | PromiseLike<TRej>) | null,
+  ): PromiseLike<TSuc | TRej> {
+    return this.promise
+      .then(async (resp) => {
+        if (resp.ok) {
+          if (checkIsJson(resp)) {
+            const obj = await resp.json();
+            successEvent.execute({ status: resp.status, data: obj });
+            return onfulfilled ? onfulfilled(obj) : obj;
+          } else {
+            successEvent.execute({ status: resp.status, data: resp });
+            throw resp;
+          }
+        } else {
+          const text = await resp.text();
+          const payload = makeHttpError(resp.status, tryParseJson(text), text);
+
+          failEvent.execute(payload);
+
+          const handler = this.httpErrorHandler.get(resp.status);
+          if (handler) {
+            handler?.(payload);
+          } else {
+            throw payload;
+          }
+        }
+      }).catch((r) => {
+
+        const handleOrThrow = (payload: any) => {
+          if (onrejected) {
+            onrejected(payload);
+          } else {
+            throw payload;
+          }
+        };
+
+        if (r.name === "FetchError") {
+          const payload = makeHttpError(SERVER_ERROR_STATUS,
+            JSON.parse(JSON.stringify(r)));
+          failEvent.execute(payload);
+          handleOrThrow(payload);
+        }
+        // TypeError is client side fetch error
+        if (r instanceof TypeError) {
+          const payload = makeHttpError(CLIENT_ERROR_STATUS, r);
+          failEvent.execute(payload);
+          handleOrThrow(payload);
+        }
+        handleOrThrow(r);
+      }).finally(() => {
+        finallyEvent.execute(undefined);
+      });
+  }
+
+  httpError<Code extends number>(
+    code: Code, handler: (err: T["responses"][Code]) => void
+  ): JsonFetchResultPromiseLike<T> {
+    this.httpErrorHandler.set(code, handler);
+    return this;
+  }
+
+  catch<TRej = never>(onrejected?: RejectHandler<TRej> | null) {
+    return this.then(undefined, onrejected);
+  }
+
+}
+
 /**
  * Fetch and returns as json.
  * @param info the fetch info
@@ -100,59 +185,24 @@ function checkIsJson(resp: Response) {
  * the response will be thrown
  * @throws {JsonFetchError} If the statusCode is not [200, 300), a error will be thrown
  */
-export async function jsonFetch<T>(
+export function jsonFetch<T extends GeneralSchema>(
   info: FetchInfo,
   signal?: AbortSignal,
-): Promise<JsonFetchResult<T>> {
+): JsonFetchResultPromiseLike<T> {
 
   const isForm = isFormData(info.body);
 
   prefetchEvent.execute(undefined);
 
-  try {
-    const resp = await fullFetch(info.path, info.query, {
-      method: info.method ?? "GET",
-      headers: {
-        ...isForm ? undefined : { "content-type": "application/json" },
-        ...info.headers,
-      },
-      body: isForm ? (info.body as any) : JSON.stringify(info.body),
-      signal,
-    });
-
-    if (resp.ok) {
-      if (checkIsJson(resp)) {
-        const obj = await resp.json();
-        successEvent.execute({ status: resp.status, data: obj });
-        return obj;
-      } else {
-        successEvent.execute({ status: resp.status, data: resp });
-        throw resp;
-      }
-    } else {
-      const text = await resp.text();
-      const payload = makeHttpError(resp.status, tryParseJson(text), text);
-      failEvent.execute(payload);
-      throw payload;
-    }
-  } catch (r) {
-    // existence of r.type indicates it's a server error (node-fetch)
-    if (r.name === "FetchError") {
-      const payload = makeHttpError(SERVER_ERROR_STATUS, JSON.parse(JSON.stringify(r)));
-      failEvent.execute(payload);
-      throw payload;
-    }
-    // TypeError is client side fetch error
-    if (r instanceof TypeError) {
-      const payload = makeHttpError(CLIENT_ERROR_STATUS, r);
-      failEvent.execute(payload);
-      throw payload;
-    }
-    throw r;
-  } finally {
-    finallyEvent.execute(undefined);
-  }
-
+  return new JsonFetchResultPromiseLike(fullFetch(info.path, info.query, {
+    method: info.method ?? "GET",
+    headers: {
+      ...isForm ? undefined : { "content-type": "application/json" },
+      ...info.headers,
+    },
+    body: isForm ? (info.body as any) : JSON.stringify(info.body),
+    signal,
+  }));
 }
 
 export type JsonFetch = typeof jsonFetch;
@@ -161,7 +211,7 @@ export function fromApi<TSchema extends GeneralSchema>(method: HttpMethod, url: 
   return function (
     args: RequestArgs<TSchema>,
     signal?: AbortSignal,
-  ): Promise<JsonFetchResult<SuccessResponse<TSchema>>>  {
+  ): JsonFetchResultPromiseLike<TSchema>  {
 
     const anyArgs = args as any;
     // replace path params using query

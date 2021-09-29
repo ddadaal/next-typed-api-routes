@@ -1,8 +1,6 @@
 import type { NextPage } from "next";
 import { useState } from "react";
 import { realApi } from "src/apis/api";
-import { HttpError } from "next-typed-api-routes";
-import type { LoginSchema } from "src/pages/api/login/[username]";
 
 const Home: NextPage = () => {
 
@@ -13,15 +11,14 @@ const Home: NextPage = () => {
     <div>
       <h1>next-typed-api-routes example</h1>
       <div>
-        <form onSubmit={(e) => {
+        <form onSubmit={async (e) => {
           e.preventDefault();
-          realApi.login["[username]"]({ query: { username, password } })
-            .then((resp) => {
-              alert("Success. Token: " + resp.token);
-            }).catch((e) => {
-              const ex = e as HttpError<LoginSchema["responses"]["401"]>;
-              alert("Failed. Reason: " + ex.data?.reason);
-            });
+          const resp =
+           await realApi.login["[username]"]({ query: { username, password } })
+             .httpError(401, ({ reason }) => {
+               alert("Failed. Reason: " + reason);
+             });
+          alert("Success. Token: " + resp.token);
         }}
         >
           <label htmlFor="username">Username</label>
