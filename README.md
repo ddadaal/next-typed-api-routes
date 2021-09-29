@@ -1,5 +1,7 @@
 # next-typed-api-routes
 
+![npm](https://img.shields.io/npm/v/@ddadaal/next-typed-api-routes)
+
 Write a `Schema` interface in your API route file, and you get
 
 - route parameters validation and type completion
@@ -33,7 +35,7 @@ npm install --save @ddadaal/next-typed-api-routes
 2. Create a API route `src/pages/api/test.ts` with the following content
 
 ```ts
-import { route } from "next-typed-api-routes";
+import { route } from "@ddadaal/next-typed-api-routes";
 
 interface Value {
   articleId: number;
@@ -68,7 +70,7 @@ export default route<TestApiSchema>("TestApiSchema", async (req) => {
 
 `src/apis/api.ts` and `src/apis/schemas.json` will be generated at `src/apis`.
 
-4. Import the `realApis` variable from `src/apis/api.ts` to use the client.
+4. Import the `api` variable from `src/apis/api.ts` to use the client.
 
 ```ts
 import { api } from "src/apis/api";

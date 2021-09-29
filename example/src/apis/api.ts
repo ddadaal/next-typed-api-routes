@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import { fromApi } from "next-typed-api-routes";
+import { fromApi } from "@ddadaal/next-typed-api-routes";
 
 import type { LoginSchema } from "src/pages/api/login/[username]";
 
