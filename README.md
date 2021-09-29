@@ -71,9 +71,9 @@ export default route<TestApiSchema>("TestApiSchema", async (req) => {
 4. Import the `realApis` variable from `src/apis/api.ts` to use the client.
 
 ```ts
-import { realApis } from "src/apis";
+import { api } from "src/apis/api";
 
-realApis.testApi({ query: {}, body: { test: "123" } })
+api.testApi({ query: {}, body: { test: "123" } })
   .httpError(403, ({ message }) => { console.log(403, message); })
   .then(({ test }) => { console.log(test); });
 ```

@@ -132,12 +132,14 @@ export interface GenerateApiClientsArgs {
   apiFilePath?: string;
   apiRoutesPath?: string;
   fetchImport?: string;
+  apiObjectName?: string;
 }
 
 export async function generateClients({
   apiFilePath = "src/apis/api.ts",
   apiRoutesPath = "src/pages/api",
   fetchImport = "next-typed-api-routes",
+  apiObjectName = "api",
 }: GenerateApiClientsArgs) {
 
   if (!apiRoutesPath.endsWith("/")) {
@@ -153,7 +155,7 @@ export async function generateClients({
     [ts.factory.createModifier(ts.SyntaxKind.ExportKeyword)],
     ts.factory.createVariableDeclarationList([
       ts.factory.createVariableDeclaration(
-        "realApi",
+        ts.factory.createIdentifier(apiObjectName),
         undefined,
         undefined,
         ts.factory.createObjectLiteralExpression(endpoints.map((e) => (

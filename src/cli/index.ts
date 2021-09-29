@@ -22,6 +22,7 @@ yargs(hideBin(process.argv))
       },
       apiRoutesPath: { type: "string", default: "src/pages/api" },
       fetchImport: { type: "string", default: "next-typed-api-routes" },
+      apiObjectName: { type: "string", default: "api" },
     });
   }, (argv) => {
     generateClients(argv);

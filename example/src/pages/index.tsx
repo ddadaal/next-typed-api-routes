@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import { useState } from "react";
-import { realApi } from "src/apis/api";
+import { api } from "src/apis/api";
 
 const Home: NextPage = () => {
 
@@ -14,7 +14,7 @@ const Home: NextPage = () => {
         <form onSubmit={async (e) => {
           e.preventDefault();
           const resp =
-           await realApi.login({ query: { username, password } })
+           await api.login({ query: { username, password } })
              .httpError(401, ({ reason }) => {
                alert("Failed. Reason: " + reason);
              });
