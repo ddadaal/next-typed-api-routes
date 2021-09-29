@@ -14,7 +14,7 @@ const Home: NextPage = () => {
         <form onSubmit={async (e) => {
           e.preventDefault();
           const resp =
-           await realApi.login["[username]"]({ query: { username, password } })
+           await realApi.login({ query: { username, password } })
              .httpError(401, ({ reason }) => {
                alert("Failed. Reason: " + reason);
              });

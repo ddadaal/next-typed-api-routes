@@ -2,7 +2,6 @@ import fs from "fs";
 import path from "path";
 import ts from "typescript";
 import { EOL } from "os";
-import { lint } from "./lint";
 
 const eslintMaxLen = "/* eslint-disable max-len */";
 
@@ -16,16 +15,22 @@ const getFileNameInfo = (filename: string) => {
 };
 
 interface Import {
-  schemaName: string;
+  interfaceName: string;
   relativePath: string;
 }
 
+interface Endpoint {
+  schemaName: string;
+  interfaceName: string;
+  method: string;
+  url: string;
+}
 
 async function getApiObject(
-  rootDir: string, relativePath: string, imports: Import[],
-): Promise<ts.ObjectLiteralExpression> {
-
-  const subObjects = [] as ts.ObjectLiteralElementLike[];
+  rootDir: string, relativePath: string,
+  endpoints: Endpoint[],
+  imports: Import[],
+) {
 
   for (const f of await fs.promises.readdir(rootDir)) {
     const p = path.join(rootDir, f);
@@ -56,9 +61,6 @@ async function getApiObject(
 
         const interfaceName = interfaceDeclaration.name.text;
 
-        // Set the propertyName as the filename
-        const propertyName = filename;
-
         // Get method from method property
         let methodName: string | undefined = undefined;
         for (const s of interfaceDeclaration.members) {
@@ -77,57 +79,65 @@ async function getApiObject(
 
         // Get URL from file path
         imports.push({
-          schemaName: interfaceName,
+          interfaceName,
           relativePath: relativePath + "/" + filename,
         });
 
-        subObjects.push(ts.factory.createPropertyAssignment(
-          ts.factory.createStringLiteral(propertyName),
-          ts.factory.createCallExpression(
-            ts.factory.createIdentifier("fromApi"),
-            [
-              ts.factory.createTypeReferenceNode(
-                ts.factory.createIdentifier(interfaceName),
-                undefined
-              ),
-            ],
-            [
-              ts.factory.createStringLiteral(methodName),
-              ts.factory.createStringLiteral("/api/" + relativePath + "/" + filename),
-            ],
-          ),
-        ));
+        // LoginSchema -> login
+        const schemaName = interfaceName[0].toLocaleLowerCase()
+        + interfaceName.substr(1, interfaceName.length - "Schema".length - 1);
+
+        endpoints.push({
+          method: methodName,
+          schemaName,
+          interfaceName,
+          url: "/api/" + relativePath + "/" + filename,
+        });
+
+        // subObjects.push(ts.factory.createPropertyAssignment(
+        //   ts.factory.createStringLiteral(propertyName),
+        //   ts.factory.createCallExpression(
+        //     ts.factory.createIdentifier("fromApi"),
+        //     [
+        //       ts.factory.createTypeReferenceNode(
+        //         ts.factory.createIdentifier(interfaceName),
+        //         undefined
+        //       ),
+        //     ],
+        //     [
+        //       ts.factory.createStringLiteral(methodName),
+        //       ts.factory.createStringLiteral("/api/" + relativePath + "/" + filename),
+        //     ],
+        //   ),
+        // ));
       }
     } else {
-      const apiObject = await getApiObject(p, path.join(relativePath, f), imports);
+      await getApiObject(p, path.join(relativePath, f), endpoints, imports);
 
       // ignore empty object
-      let count = 0;
-      apiObject.forEachChild(() => count++);
-      if (count > 0) {
-        subObjects.push(ts.factory.createPropertyAssignment(
-          ts.factory.createStringLiteral(f), apiObject,
-        ));
-      }
+      // let count = 0;
+      // apiObject.forEachChild(() => count++);
+      // if (count > 0) {
+      //   subObjects.push(ts.factory.createPropertyAssignment(
+      //     ts.factory.createStringLiteral(f), apiObject,
+      //   ));
+      // }
     }
   }
 
-  return ts.factory.createObjectLiteralExpression(subObjects, true);
-
+  // return ts.factory.createObjectLiteralExpression(subObjects, true);
 }
 
 export interface GenerateApiClientsArgs {
   apiFilePath?: string;
   apiRoutesPath?: string;
   fetchImport?: string;
-  eslintCwd?: string;
 }
 
 export async function generateClients({
   apiFilePath = "src/apis/api.ts",
   apiRoutesPath = "src/pages/api",
   fetchImport = "next-typed-api-routes",
-  eslintCwd = process.cwd(),
 }: GenerateApiClientsArgs) {
 
   if (!apiRoutesPath.endsWith("/")) {
@@ -135,17 +145,35 @@ export async function generateClients({
   }
 
   const imports = [] as Import[];
-  const apiObject = await getApiObject(apiRoutesPath, "", imports);
+  const endpoints = [] as Endpoint[];
+
+  await getApiObject(apiRoutesPath, "", endpoints, imports);
 
   const apiObjDeclaration = ts.factory.createVariableStatement(
     [ts.factory.createModifier(ts.SyntaxKind.ExportKeyword)],
     ts.factory.createVariableDeclarationList([
-
       ts.factory.createVariableDeclaration(
         "realApi",
         undefined,
         undefined,
-        apiObject,
+        ts.factory.createObjectLiteralExpression(endpoints.map((e) => (
+          ts.factory.createPropertyAssignment(
+            ts.factory.createStringLiteral(e.schemaName),
+            ts.factory.createCallExpression(
+              ts.factory.createIdentifier("fromApi"),
+              [
+                ts.factory.createTypeReferenceNode(
+                  ts.factory.createIdentifier(e.interfaceName),
+                  undefined
+                ),
+              ],
+              [
+                ts.factory.createStringLiteral(e.method),
+                ts.factory.createStringLiteral(e.url),
+              ],
+            ),
+          )))
+        ),
       ),
     ], ts.NodeFlags.Const),
   );
@@ -162,7 +190,7 @@ export async function generateClients({
     ts.factory.createStringLiteral(fetchImport),
   );
 
-  const importDeclarations = imports.map(({ relativePath, schemaName }) => (
+  const importDeclarations = imports.map(({ relativePath, interfaceName }) => (
     ts.factory.createImportDeclaration(
       undefined,
       undefined,
@@ -171,7 +199,7 @@ export async function generateClients({
         undefined,
         ts.factory.createNamedImports([ts.factory.createImportSpecifier(
           undefined,
-          ts.factory.createIdentifier(schemaName)
+          ts.factory.createIdentifier(interfaceName)
         )])
       ),
       ts.factory.createStringLiteral(apiRoutesPath + relativePath)
@@ -198,13 +226,10 @@ export async function generateClients({
     EOL + EOL +
     getString(apiObjDeclaration);
 
-  // lint the content using cwd
-  const result = await lint(eslintCwd, content);
-
   // create dir if not exists
   await fs.promises.mkdir(path.dirname(apiFilePath), { recursive: true });
 
   await fs.promises.writeFile(
-    apiFilePath, result, { flag: "w+" });
+    apiFilePath, content, { flag: "w+" });
 }
 

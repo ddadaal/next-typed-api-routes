@@ -20,7 +20,6 @@ all at one command!
   }
 }
 ```
-3. Setup `eslint`
 4. All codes should live in `src` dir [next.js src directory](https://nextjs.org/docs/advanced-features/src-directory)
 
 # Get Started
@@ -74,7 +73,7 @@ export default route<TestApiSchema>("TestApiSchema", async (req) => {
 ```ts
 import { realApis } from "src/apis";
 
-realApis.test({ query: {}, body: { test: "123" } })
+realApis.testApi({ query: {}, body: { test: "123" } })
   .httpError(403, ({ message }) => { console.log(403, message); })
   .then(({ test }) => { console.log(test); });
 ```
@@ -139,7 +138,7 @@ interface TestSchema {
 
 # Tips
 
-- Currently all schemas and models must have globally unique name. This limitation might be relaxed in a future release
+- All schemas and used models must have globally unique name
 - Return a `{ [statusCode]: payload }` object in a route to take advantages of response body type check and faster JSON serialization
 
 # Thanks

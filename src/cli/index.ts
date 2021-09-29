@@ -22,12 +22,6 @@ yargs(hideBin(process.argv))
       },
       apiRoutesPath: { type: "string", default: "src/pages/api" },
       fetchImport: { type: "string", default: "next-typed-api-routes" },
-      eslintCwd: {
-        type: "string",
-        desc: "cwd for linting the output api file using eslint",
-        default: process.cwd(),
-        defaultDescription: "process.cwd()",
-      },
     });
   }, (argv) => {
     generateClients(argv);
