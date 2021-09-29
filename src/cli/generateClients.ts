@@ -93,39 +93,11 @@ async function getApiObject(
           interfaceName,
           url: "/api/" + relativePath + "/" + filename,
         });
-
-        // subObjects.push(ts.factory.createPropertyAssignment(
-        //   ts.factory.createStringLiteral(propertyName),
-        //   ts.factory.createCallExpression(
-        //     ts.factory.createIdentifier("fromApi"),
-        //     [
-        //       ts.factory.createTypeReferenceNode(
-        //         ts.factory.createIdentifier(interfaceName),
-        //         undefined
-        //       ),
-        //     ],
-        //     [
-        //       ts.factory.createStringLiteral(methodName),
-        //       ts.factory.createStringLiteral("/api/" + relativePath + "/" + filename),
-        //     ],
-        //   ),
-        // ));
       }
     } else {
       await getApiObject(p, path.join(relativePath, f), endpoints, imports);
-
-      // ignore empty object
-      // let count = 0;
-      // apiObject.forEachChild(() => count++);
-      // if (count > 0) {
-      //   subObjects.push(ts.factory.createPropertyAssignment(
-      //     ts.factory.createStringLiteral(f), apiObject,
-      //   ));
-      // }
     }
   }
-
-  // return ts.factory.createObjectLiteralExpression(subObjects, true);
 }
 
 export interface GenerateApiClientsArgs {
@@ -138,7 +110,7 @@ export interface GenerateApiClientsArgs {
 export async function generateClients({
   apiFilePath = "src/apis/api.ts",
   apiRoutesPath = "src/pages/api",
-  fetchImport = "next-typed-api-routes",
+  fetchImport = "@ddadaal/next-typed-api-routes",
   apiObjectName = "api",
 }: GenerateApiClientsArgs) {
 
