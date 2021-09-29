@@ -21,6 +21,7 @@ all at one command!
 }
 ```
 3. Setup `eslint`
+4. All codes should live in `src` dir [next.js src directory](https://nextjs.org/docs/advanced-features/src-directory)
 
 # Get Started
 
@@ -64,17 +65,11 @@ export default route<TestApiSchema>("TestApiSchema", async (req) => {
 });
 ```
 
-3. Add the following into the `scripts` section of your `package.json` to run `ntar schema` after `npm install`
+3. Run `npx ntar schema && npx ntar client`
 
-```json
-"postinstall": "ntar schema"
-```
+`src/apis/api.ts` and `src/apis/schemas.json` will be generated at `src/apis`.
 
-4. Run `npx ntar schema && npx ntar client`
-
-a `src/apis/api.ts` file will be generated at `src/apis`.
-
-5. Import the `realApis` variable from `src/apis/api.ts` to use the client.
+4. Import the `realApis` variable from `src/apis/api.ts` to use the client.
 
 ```ts
 import { realApis } from "src/apis";

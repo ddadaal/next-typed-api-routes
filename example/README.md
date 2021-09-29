@@ -1,0 +1,1 @@
+# next-typed-api-routes project example
