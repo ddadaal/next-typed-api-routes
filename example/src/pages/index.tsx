@@ -15,7 +15,7 @@ const Home: NextPage = () => {
       <div>
         <form onSubmit={(e) => {
           e.preventDefault();
-          realApi.login.login({ query: { username, password } })
+          realApi.login["[username]"]({ query: { username, password } })
             .then((resp) => {
               alert("Success. Token: " + resp.token);
             }).catch((e) => {

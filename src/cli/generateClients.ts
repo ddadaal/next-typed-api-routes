@@ -56,9 +56,8 @@ async function getApiObject(
 
         const interfaceName = interfaceDeclaration.name.text;
 
-        const schemaName = interfaceName.slice(0, interfaceName.length - "Schema".length);
-
-        const propertyName = schemaName[0].toLocaleLowerCase() + schemaName.slice(1);
+        // Set the propertyName as the filename
+        const propertyName = filename;
 
         // Get method from method property
         let methodName: string | undefined = undefined;
@@ -77,14 +76,13 @@ async function getApiObject(
         }
 
         // Get URL from file path
-
         imports.push({
           schemaName: interfaceName,
           relativePath: relativePath + "/" + filename,
         });
 
         subObjects.push(ts.factory.createPropertyAssignment(
-          propertyName,
+          ts.factory.createStringLiteral(propertyName),
           ts.factory.createCallExpression(
             ts.factory.createIdentifier("fromApi"),
             [
@@ -108,7 +106,7 @@ async function getApiObject(
       apiObject.forEachChild(() => count++);
       if (count > 0) {
         subObjects.push(ts.factory.createPropertyAssignment(
-          f, apiObject,
+          ts.factory.createStringLiteral(f), apiObject,
         ));
       }
     }
