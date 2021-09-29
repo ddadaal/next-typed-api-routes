@@ -31,7 +31,7 @@ all at one command!
 npm install --save next-typed-api-routes
 ```
 
-2. Create a API route `src/pages/api/testapi.ts` with the following content
+2. Create a API route `src/pages/api/test.ts` with the following content
 
 ```ts
 import { route } from "next-typed-api-routes";
@@ -53,7 +53,7 @@ export interface TestApiSchema {
 
   responses: {
     200: { test: string; }
-    403: { testA: string; }
+    403: { message: string; }
   }
 }
 
@@ -74,8 +74,9 @@ export default route<TestApiSchema>("TestApiSchema", async (req) => {
 ```ts
 import { realApis } from "src/apis";
 
-realApis.testApi({ query: {}, body: { test: "123" } })
-  .then(({ test }) => { console.log(test)});
+realApis.test({ query: {}, body: { test: "123" } })
+  .httpError(403, ({ message }) => { console.log(403, message); })
+  .then(({ test }) => { console.log(test); });
 ```
 
 # Updating existing API Routes
@@ -140,7 +141,6 @@ interface TestSchema {
 
 - Currently all schemas and models must have globally unique name. This limitation might be relaxed in a future release
 - Return a `{ [statusCode]: payload }` object in a route to take advantages of response body type check and faster JSON serialization
-
 
 # Thanks
 
