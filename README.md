@@ -113,8 +113,9 @@ interface TestSchema {
     
     /**
      * You can also use jsdoc for more specific limits
+     * You can use keywords and values from JSON Schema Draft-07
      * @format email
-     * @length 50
+     * @maxLength 50
      */
     anotherProperty: string;
   }
@@ -140,6 +141,12 @@ interface TestSchema {
 }
 ```
 
+# Tips
+
+- Currently all schemas and models must have globally unique name. This limitation might be relaxed in a future release
+- Return a `{ [statusCode]: payload }` object in a route to take advantages of response body type check and faster JSON serialization
+
+
 # Thanks
 
 - [`Ajv`](https://ajv.js.org/) for JSON Schema validation
@@ -149,7 +156,7 @@ interface TestSchema {
 
 # Roadmap
 
-- [] More configurations
+- [ ] More configurations
 
 # License
 
