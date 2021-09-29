@@ -8,6 +8,20 @@ Write a `Schema` interface in your API route file, and you get
 
 all at one command!
 
+# Requirement for the target Next.js Project
+
+1. Use [TypeScript](https://nextjs.org/docs/basic-features/typescript)
+2. Set `"baseUrl": "."` in `tsconfig.json` `compilerOptions` part
+
+```json
+{
+  "compilerOptions": {
+    "baseUrl": "."
+  }
+}
+```
+3. Setup `eslint`
+
 # Get Started
 
 1. Install the package in your Next.js TypeScript project
