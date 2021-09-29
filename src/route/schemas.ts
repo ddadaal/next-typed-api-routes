@@ -1,5 +1,7 @@
 import Ajv, { SchemaObject, ValidateFunction } from "ajv";
 import fastJson from "fast-json-stringify";
+import addDraft2019Format from "ajv-formats-draft2019";
+import addFormats from "ajv-formats";
 
 type Serializer = (doc: string) => any;
 
@@ -19,6 +21,11 @@ export function createValidatorsFromSchema(schemas: SchemaFileContent) {
   // add shared models
   const ajv = new Ajv();
 
+  // add formats support
+  addFormats(ajv);
+  addDraft2019Format(ajv);
+
+  // add schemas
   for (const model of Object.values(schemas.models)) {
     ajv.addSchema(model);
   }
