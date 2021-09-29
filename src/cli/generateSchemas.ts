@@ -88,9 +88,9 @@ export async function generateSchemasJson({
   changeRef(models);
   changeRef(routeSchemas);
 
-  // write the ../schemas.json file on the module dir
+  // write to src/apis/schemas.json file on the module dir
   await fsp.writeFile(
-    path.join(__dirname, "../schemas.json"),
+    "src/apis/schemas.json",
     stringify({ routes: routeSchemas, models: models })
   );
 

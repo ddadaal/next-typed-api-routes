@@ -2,8 +2,10 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import type { Schema } from "../types/schema";
 import type { ErrorObject } from "ajv";
 import { createValidatorsFromSchema } from "./schemas";
+
+// Hardcoded schemas.json path
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const schemas = require("next-typed-api-routes/schemas.json");
+const schemas = require("src/apis/schemas.json");
 
 type ValueOf<T> = T[keyof T];
 
