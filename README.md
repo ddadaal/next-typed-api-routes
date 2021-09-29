@@ -20,14 +20,14 @@ all at one command!
   }
 }
 ```
-4. All codes should live in `src` dir [next.js src directory](https://nextjs.org/docs/advanced-features/src-directory)
+3. All codes should live in `src` dir [next.js src directory](https://nextjs.org/docs/advanced-features/src-directory)
 
 # Get Started
 
 1. Install the package in your Next.js TypeScript project
 
 ```bash
-npm install --save next-typed-api-routes
+npm install --save @ddadaal/next-typed-api-routes
 ```
 
 2. Create a API route `src/pages/api/test.ts` with the following content
@@ -151,6 +151,13 @@ interface TestSchema {
 # Roadmap
 
 - [ ] More configurations
+
+# Development
+
+```
+npm install
+npm install --no-save next
+```
 
 # License
 

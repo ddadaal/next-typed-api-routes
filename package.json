@@ -1,6 +1,6 @@
 {
-  "name": "next-typed-api-routes",
-  "version": "1.0.0",
+  "name": "@ddadaal/next-typed-api-routes",
+  "version": "0.1.0",
   "description": "Make Next.js API Routes strongly typed with routes and clients type completion and auto-generated parameter validation",
   "source": "src/index.ts",
   "exports": "./dist/index.modern.js",
@@ -14,7 +14,8 @@
     "build-lib": "microbundle src/index.ts",
     "build-cli": "tsc --project tsconfig.cli.json",
     "build": "rimraf dist && npm run build-lib && npm run build-cli",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "release": "standard-version"
   },
   "repository": {
     "type": "git",
@@ -24,7 +25,11 @@
     "next",
     "typescript"
   ],
-  "author": "Chen Junda",
+  "author": {
+    "name": "Chen Junda",
+    "email": "ddadaal@outlook.com",
+    "url": "https://ddadaal.me"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ddadaal/next-typed-api-routes/issues"
@@ -36,21 +41,22 @@
     "@types/node": "^16.10.1",
     "@typescript-eslint/eslint-plugin": "4.32.0",
     "@typescript-eslint/parser": "4.32.0",
+    "eslint": "^7.32.0",
     "eslint-plugin-react": "7.26.0",
     "rimraf": "^3.0.2",
-    "typescript": "^4.4.3",
+    "standard-version": "^9.3.1",
     "ts-json-schema-generator": "^0.95.0",
+    "typescript": "^4.4.3",
     "yargs": "^17.2.1",
-    "eslint": "^7.32.0"
+    "microbundle": "^0.13.3"
   },
   "peerDependencies": {
-    "next": "^11.1.2"
+    "next": ">=11.x"
   },
   "dependencies": {
     "ajv": "^8.6.3",
     "ajv-formats": "^2.1.1",
     "ajv-formats-draft2019": "^1.6.1",
-    "fast-json-stringify": "^2.7.10",
-    "next": "^11.1.2"
+    "fast-json-stringify": "^2.7.10"
   }
 }
