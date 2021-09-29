@@ -203,6 +203,9 @@ export async function generateClients({
   // lint the content using cwd
   const result = await lint(eslintCwd, content);
 
+  // create dir if not exists
+  await fs.promises.mkdir(path.dirname(apiFilePath), { recursive: true });
+
   await fs.promises.writeFile(
     apiFilePath, result, { flag: "w+" });
 }
