@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.5](https://github.com/ddadaal/next-typed-api-routes/compare/v0.1.4...v0.1.5) (2021-09-30)
+
+
+### Bug Fixes
+
+* **package:** add long to suppress fsj warning ([f99c62a](https://github.com/ddadaal/next-typed-api-routes/commit/f99c62aca12ef6c7701cd62f59f96230cf604ec4))
+* **route:** allow union types ([f7f542f](https://github.com/ddadaal/next-typed-api-routes/commit/f7f542f7f6ceacb52461b5231933deac5b9d947c))
+* **route:** body validation error code ([310a315](https://github.com/ddadaal/next-typed-api-routes/commit/310a3153d238f3abff3f10da71dc79bc40a3eacb))
+* **route:** show complete error messages for param validation ([50bfaff](https://github.com/ddadaal/next-typed-api-routes/commit/50bfaff62bf7e0d1cec9b89c1470f65c61ed26c2))
+
 ### [0.1.4](https://github.com/ddadaal/next-typed-api-routes/compare/v0.1.3...v0.1.4) (2021-09-30)
 
 
