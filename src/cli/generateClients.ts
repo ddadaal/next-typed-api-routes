@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import ts from "typescript";
 import { EOL } from "os";
+import { checkApiRoutesPath, createDir } from "./errors";
 
 const eslintMaxLen = "/* eslint-disable max-len */";
 
@@ -117,6 +118,9 @@ export async function generateClients({
   if (!apiRoutesPath.endsWith("/")) {
     apiRoutesPath += "/";
   }
+
+  await checkApiRoutesPath(apiRoutesPath);
+  await createDir(apiFilePath);
 
   const imports = [] as Import[];
   const endpoints = [] as Endpoint[];
