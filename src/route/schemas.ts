@@ -19,7 +19,7 @@ interface SchemaFileContent {
 export function createValidatorsFromSchema(schemas: SchemaFileContent) {
 
   // add shared models
-  const ajv = new Ajv();
+  const ajv = new Ajv({ allowUnionTypes: true });
 
   // add formats support
   addFormats(ajv);
