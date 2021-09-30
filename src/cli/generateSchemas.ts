@@ -6,7 +6,7 @@ import {
   createFormatter, createParser, SchemaGenerator, SubNodeParser,
 } from "ts-json-schema-generator";
 import path from "path";
-import { checkApiRoutesPath, createDir } from "./errors";
+import { checkApiRoutesPath } from "./errors";
 
 const fsp = fs.promises;
 
@@ -51,7 +51,7 @@ interface GenerateSchemaArgs {
   tsconfigPath?: string;
 }
 
-const SCHEMAS_JSON_PATH = "src/apis/schemas.json";
+const SCHEMAS_JSON_PATH = path.join(__dirname, "../schemas.json");
 
 export async function generateSchemasJson({
   apiRoutesPath = "src/pages/api",
@@ -60,9 +60,6 @@ export async function generateSchemasJson({
 
   // check if apiRoutesPath exists
   await checkApiRoutesPath(apiRoutesPath);
-
-  // make dir for schemas path
-  await createDir(SCHEMAS_JSON_PATH);
 
   const config: tsj.Config = {
     path: path.join(apiRoutesPath, "**/**.ts"),

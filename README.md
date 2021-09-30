@@ -68,7 +68,9 @@ export default route<TestApiSchema>("TestApiSchema", async (req) => {
 
 3. Run `npx ntar schema && npx ntar client`
 
-`src/apis/api.ts` and `src/apis/schemas.json` will be generated at `src/apis`.
+`schemas.json` will be generated at the module folder under `node_modules`. You should never edit it directly. The project cannot start without this file.
+
+`src/apis/api.ts` will be generated at `src/apis`.
 
 4. Import the `api` variable from `src/apis/api.ts` to use the client.
 
@@ -78,6 +80,18 @@ import { api } from "src/apis/api";
 api.testApi({ query: {}, body: { test: "123" } })
   .httpError(403, ({ message }) => { console.log(403, message); })
   .then(({ test }) => { console.log(test); });
+```
+
+5. **Important** Add `ntar schema` to `postinstall` script in your `package.json`
+
+so that `schemas.json` will be generated every time your project is `npm install`ed. 
+
+```json
+{
+  "scripts": {
+    "postinstall": "ntar schema"
+  }
+}
 ```
 
 # Updating existing API Routes

@@ -5,7 +5,7 @@ import { createValidatorsFromSchema } from "./schemas";
 
 // Hardcoded schemas.json path
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const schemas = require("src/apis/schemas.json");
+const schemas = require("./schemas.json");
 
 type ValueOf<T> = T[keyof T];
 
