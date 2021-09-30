@@ -127,82 +127,29 @@ export async function generateClients({
 
   await getApiObject(apiRoutesPath, "", endpoints, imports);
 
-  const apiObjDeclaration = ts.factory.createVariableStatement(
-    [ts.factory.createModifier(ts.SyntaxKind.ExportKeyword)],
-    ts.factory.createVariableDeclarationList([
-      ts.factory.createVariableDeclaration(
-        ts.factory.createIdentifier(apiObjectName),
-        undefined,
-        undefined,
-        ts.factory.createObjectLiteralExpression(endpoints.map((e) => (
-          ts.factory.createPropertyAssignment(
-            ts.factory.createStringLiteral(e.schemaName),
-            ts.factory.createCallExpression(
-              ts.factory.createIdentifier("fromApi"),
-              [
-                ts.factory.createTypeReferenceNode(
-                  ts.factory.createIdentifier(e.interfaceName),
-                  undefined
-                ),
-              ],
-              [
-                ts.factory.createStringLiteral(e.method),
-                ts.factory.createStringLiteral(e.url),
-              ],
-            ),
-          )))
-        ),
-      ),
-    ], ts.NodeFlags.Const),
-  );
+  // use string instead of ts factories to easily style the code and reduce complexity
+  const apiObjDeclaration = `
+export const ${apiObjectName} = {
+${endpoints.map((e) =>
+    `  ${e.schemaName}: fromApi<${e.interfaceName}>("${e.method}", "${e.url}"),`
+  ).join(EOL)}
+};
+  `;
 
-  const fetchApiImportDeclaration = ts.factory.createImportDeclaration([], [],
-    ts.factory.createImportClause(false, undefined,
-      ts.factory.createNamedImports([
-        ts.factory.createImportSpecifier(
-          undefined,
-          ts.factory.createIdentifier("fromApi")
-        ),
-      ]),
-    ),
-    ts.factory.createStringLiteral(fetchImport),
-  );
+  const fetchApiImportDeclaration =
+    `import { fromApi } from "${fetchImport}";`;
 
   const importDeclarations = imports.map(({ relativePath, interfaceName }) => (
-    ts.factory.createImportDeclaration(
-      undefined,
-      undefined,
-      ts.factory.createImportClause(
-        true,
-        undefined,
-        ts.factory.createNamedImports([ts.factory.createImportSpecifier(
-          undefined,
-          ts.factory.createIdentifier(interfaceName)
-        )])
-      ),
-      ts.factory.createStringLiteral(apiRoutesPath + relativePath)
-    )
-  ));
-
-  const printer = ts.createPrinter();
-
-  const dummySourceFile = ts.createSourceFile(apiFilePath, "", ts.ScriptTarget.Latest);
-
-  function getString(node: ts.Node) {
-    return printer.printNode(
-      ts.EmitHint.Unspecified,
-      node,
-      dummySourceFile);
-  }
+    `import type { ${interfaceName} } from "${apiRoutesPath + relativePath}";`
+  )).join(EOL);
 
   const content =
-    eslintMaxLen +
-    EOL +
-    getString(fetchApiImportDeclaration) +
+    eslintMaxLen + EOL +
+    fetchApiImportDeclaration +
     EOL + EOL +
-    importDeclarations.map(getString).join(EOL) +
+    importDeclarations +
     EOL + EOL +
-    getString(apiObjDeclaration);
+    apiObjDeclaration;
 
   // create dir if not exists
   await fs.promises.mkdir(path.dirname(apiFilePath), { recursive: true });
