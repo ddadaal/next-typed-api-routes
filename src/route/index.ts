@@ -48,7 +48,7 @@ export function route<S extends Schema<any, any, any>>(
 
     if (validator.body) {
       if (!validator.body(req.body)) {
-        reportError(res, "QUERY", validator.body.errors);
+        reportError(res, "BODY", validator.body.errors);
         return;
       }
     }
