@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.3](https://github.com/ddadaal/next-typed-api-routes/compare/v0.1.2...v0.1.3) (2021-09-30)
+
+
+### Bug Fixes
+
+* **cli:** check path existence ([15f34cf](https://github.com/ddadaal/next-typed-api-routes/commit/15f34cfe13a5f5dd4b8fc2d66314813130d702dd))
+* generate schemas.json in the module dir ([4de1afc](https://github.com/ddadaal/next-typed-api-routes/commit/4de1afc63808f5676cc34907e174490cadf5e8b1))
+* **package:** disable modern package (next doesn't support it) ([763c6cf](https://github.com/ddadaal/next-typed-api-routes/commit/763c6cf8b0e2338f2c3cc870118593a517787deb))
+
 ### [0.1.2](https://github.com/ddadaal/next-typed-api-routes/compare/v0.1.1...v0.1.2) (2021-09-29)
 
 
