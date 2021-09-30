@@ -15,7 +15,7 @@ function reportError(
   res: NextApiResponse, part: "QUERY" | "BODY", errors?: ErrorObject[] | null) {
   res.status(400).json({
     code: part + "_VALIDATION_ERROR",
-    messages: errors?.map((x) => x.message),
+    errors,
   });
 }
 
