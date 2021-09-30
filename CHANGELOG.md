@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.4](https://github.com/ddadaal/next-typed-api-routes/compare/v0.1.3...v0.1.4) (2021-09-30)
+
+
+### Bug Fixes
+
+* **client:** use string literals instead ts factory to generate api file ([335e9a5](https://github.com/ddadaal/next-typed-api-routes/commit/335e9a5aac223894064e7db9ab247d333e226f79))
+
 ### [0.1.3](https://github.com/ddadaal/next-typed-api-routes/compare/v0.1.2...v0.1.3) (2021-09-30)
 
 
