@@ -55,6 +55,11 @@ export async function generateSchemasJson({
   tsconfigPath = "./tsconfig.json",
 }: GenerateSchemaArgs) {
 
+  // check if apiRoutesPath exists
+  if (!await fsp.access(apiRoutesPath).then(() => true).catch(() => false)) {
+    throw new Error(`Api Routes ${apiRoutesPath} cannot be accessed. Does it exist?`);
+  }
+
   const config: tsj.Config = {
     path: path.join(apiRoutesPath, "**/**.ts"),
     jsDoc: "extended", expose: "all",
