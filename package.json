@@ -3,15 +3,14 @@
   "version": "0.1.2",
   "description": "Make Next.js API Routes strongly typed with routes and clients type completion and auto-generated parameter validation",
   "source": "src/index.ts",
-  "exports": "./dist/index.modern.js",
-  "main": "dist/index.cjs",
+  "main": "dist/index.js",
   "module": "dist/index.module.js",
   "types": "dist/index.d.ts",
   "bin": {
     "ntar": "dist/cli/index.js"
   },
   "scripts": {
-    "build-lib": "microbundle src/index.ts",
+    "build-lib": "microbundle src/index.ts --format esm,cjs",
     "build-cli": "tsc --project tsconfig.cli.json",
     "build": "rimraf dist && npm run build-lib && npm run build-cli",
     "test": "echo \"Error: no test specified\" && exit 1",
