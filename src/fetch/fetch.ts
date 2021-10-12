@@ -95,7 +95,7 @@ function checkIsJson(resp: Response) {
 
 type RejectHandler<TRej> = (reason: any) => TRej | PromiseLike<TRej>;
 
-class JsonFetchResultPromiseLike<T extends GeneralSchema>
+export class JsonFetchResultPromiseLike<T extends GeneralSchema>
 implements PromiseLike<SuccessResponse<T>> {
 
   private promise: Promise<Response>;
