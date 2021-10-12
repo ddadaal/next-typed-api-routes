@@ -14,17 +14,25 @@ const Home: NextPage = () => {
         <form onSubmit={async (e) => {
           e.preventDefault();
           const resp =
-           await api.login({ query: { username, password } })
+           await api.login({ query: { username, password, testNumberQuery: 3 } })
              .httpError(401, ({ reason }) => {
                alert("Failed. Reason: " + reason);
              });
           alert("Success. Token: " + resp.token);
         }}
         >
-          <label htmlFor="username">Username</label>
-          <input id="username" onChange={(e) => setUsername(e.target.value)} />
+          <label htmlFor="Email">Email</label>
+          <input
+            id="username"
+            placeholder="Must be in email format"
+            onChange={(e) => setUsername(e.target.value)}
+          />
           <label htmlFor="password">Password</label>
-          <input id="password" onChange={(e) => setPassword(e.target.value)} />
+          <input
+            id="password"
+            placeholder="Must be with length >= 8"
+            onChange={(e) => setPassword(e.target.value)}
+          />
           <button type="submit">
             Submit
           </button>

@@ -7,7 +7,9 @@ import type { LoginInfo } from "../../../models/LoginInfo";
 export interface LoginSchema {
   method: "GET";
 
-  query: LoginInfo;
+  query: LoginInfo & {
+    testNumberQuery?: number;
+  };
 
   responses: {
     200: { token: string; }
