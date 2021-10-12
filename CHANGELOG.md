@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.6](https://github.com/ddadaal/next-typed-api-routes/compare/v0.1.5...v0.1.6) (2021-10-12)
+
+
+### Bug Fixes
+
+* export JsonFetchResultPromiseLike ([145d068](https://github.com/ddadaal/next-typed-api-routes/commit/145d06851c7ae8ba7c8e34756c5fa47b17e7742e))
+
 ### [0.1.5](https://github.com/ddadaal/next-typed-api-routes/compare/v0.1.4...v0.1.5) (2021-09-30)
 
 
