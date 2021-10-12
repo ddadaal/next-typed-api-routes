@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.8](https://github.com/ddadaal/next-typed-api-routes/compare/v0.1.7...v0.1.8) (2021-10-12)
+
+
+### Bug Fixes
+
+* enable coerceTypes ([045bde2](https://github.com/ddadaal/next-typed-api-routes/commit/045bde2fc2c006c5fe732abbd32715ac73d36f5e))
+
 ### [0.1.7](https://github.com/ddadaal/next-typed-api-routes/compare/v0.1.6...v0.1.7) (2021-10-12)
 
 ### [0.1.6](https://github.com/ddadaal/next-typed-api-routes/compare/v0.1.5...v0.1.6) (2021-10-12)

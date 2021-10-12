@@ -1,6 +1,6 @@
 {
   "name": "@ddadaal/next-typed-api-routes",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Make Next.js API Routes strongly typed with routes and clients type completion and auto-generated parameter validation",
   "source": "src/index.ts",
   "main": "dist/index.js",
