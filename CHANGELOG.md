@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.9](https://github.com/ddadaal/next-typed-api-routes/compare/v0.1.8...v0.1.9) (2021-11-04)
+
+
+### Features
+
+* support finally on FetchResult ([25ff1f6](https://github.com/ddadaal/next-typed-api-routes/commit/25ff1f695485f79436ac75d6cb2d14fa8e3a1d8d))
+
+
+### Bug Fixes
+
+* change coerceType to "array" ([8ce1631](https://github.com/ddadaal/next-typed-api-routes/commit/8ce1631fd9c589785db56de32b15c23e05c73d99))
+
 ### [0.1.8](https://github.com/ddadaal/next-typed-api-routes/compare/v0.1.7...v0.1.8) (2021-10-12)
 
 
