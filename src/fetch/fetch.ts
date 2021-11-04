@@ -112,7 +112,7 @@ implements PromiseLike<SuccessResponse<T>> {
   then<TSuc = T, TRej = never>(
     onfulfilled?: ((value: SuccessResponse<T>) => TSuc | PromiseLike<TSuc>) | null,
     onrejected?: ((reason: any) => TRej | PromiseLike<TRej>) | null,
-  ): PromiseLike<TSuc | TRej> {
+  ): Promise<TSuc | TRej> {
     return this.promise
       .then(async (resp) => {
         if (resp.ok) {
@@ -174,6 +174,18 @@ implements PromiseLike<SuccessResponse<T>> {
 
   catch<TRej = never>(onrejected?: RejectHandler<TRej> | null) {
     return this.then(undefined, onrejected);
+  }
+
+  finally(onfinally?: () => any): Promise<unknown> {
+    return this.then(
+      (v) => {
+        onfinally?.();
+        return v;
+      },
+      (r) => {
+        onfinally?.();
+        return r;
+      });
   }
 
 }
