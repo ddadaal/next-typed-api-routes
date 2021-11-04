@@ -24,7 +24,7 @@ type OrPromise<T> = T | Promise<T>;
 export function route<S extends Schema<any, any, any>>(
   schemaName: string,
   handler: (
-    req: NextApiRequest & {
+    req: Omit<NextApiRequest, "body"> & {
       query: S["query"],
       body: S["body"],
     },
