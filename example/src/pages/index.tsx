@@ -11,14 +11,23 @@ const Home: NextPage = () => {
     <div>
       <h1>next-typed-api-routes example</h1>
       <div>
+        <p>To successfully login, the credentials must</p>
+        <ul>
+          <li>The username must be in email format.</li>
+          <li>The password must be of length &gt;= 8</li>
+          <li>The password must be equal.</li>
+        </ul>
         <form onSubmit={async (e) => {
           e.preventDefault();
-          const resp =
-           await api.login({ query: { username, password, testNumberQuery: 3 } })
-             .httpError(401, ({ reason }) => {
-               alert("Failed. Reason: " + reason);
-             });
-          alert("Success. Token: " + resp.token);
+          await api.login({ query: { username, password, testNumberQuery: 3 } })
+            .httpError(401, ({ reason }) => {
+              alert("401 Failed. Reason: " + reason);
+            })
+            .then(({ token }) => {
+              alert("Success. Token: " + token);
+            })
+            .catch((r) => alert("Other error." + JSON.stringify(r)))
+          ;
         }}
         >
           <label htmlFor="Email">Email</label>
@@ -30,7 +39,7 @@ const Home: NextPage = () => {
           <label htmlFor="password">Password</label>
           <input
             id="password"
-            placeholder="Must be with length >= 8"
+            placeholder="Must be of length >= 8"
             onChange={(e) => setPassword(e.target.value)}
           />
           <button type="submit">
