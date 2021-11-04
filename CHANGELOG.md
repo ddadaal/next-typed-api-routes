@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.10](https://github.com/ddadaal/next-typed-api-routes/compare/v0.1.9...v0.1.10) (2021-11-04)
+
+
+### Bug Fixes
+
+* infer req.body type correctly ([e49925b](https://github.com/ddadaal/next-typed-api-routes/commit/e49925b78a8ea2b857e78951de11810417b5d6ec))
+
 ### [0.1.9](https://github.com/ddadaal/next-typed-api-routes/compare/v0.1.8...v0.1.9) (2021-11-04)
 
 
