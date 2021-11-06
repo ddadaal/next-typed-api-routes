@@ -21,3 +21,5 @@ tsconfig.cli.json
 *.config.js
 src
 .travis.yml
+
+rollup*
