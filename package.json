@@ -2,17 +2,14 @@
   "name": "@ddadaal/next-typed-api-routes",
   "version": "0.1.10",
   "description": "Make Next.js API Routes strongly typed with routes and clients type completion and auto-generated parameter validation",
-  "source": "src/index.ts",
-  "main": "dist/index.js",
-  "module": "dist/index.module.js",
-  "types": "dist/index.d.ts",
   "bin": {
-    "ntar": "dist/cli/index.js"
+    "ntar": "lib/cli/index.js"
   },
   "scripts": {
-    "build-lib": "microbundle src/index.ts --format esm,cjs",
+    "build-client": "rollup --config rollup.client.ts --configPlugin typescript",
+    "build-server": "rollup --config rollup.server.ts --configPlugin typescript",
     "build-cli": "tsc --project tsconfig.cli.json",
-    "build": "rimraf dist && npm run build-lib && npm run build-cli",
+    "build": "rimraf lib && npm run build-cli && npm run build-client && npm run build-server",
     "test": "echo \"Error: no test specified\" && exit 1",
     "release": "standard-version"
   },
@@ -35,6 +32,9 @@
   },
   "homepage": "https://github.com/ddadaal/next-typed-api-routes#readme",
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-typescript": "^8.3.0",
     "@types/eslint": "^7.28.0",
     "@types/jest": "27.0.2",
     "@types/node": "^16.10.1",
@@ -43,8 +43,9 @@
     "eslint": "^7.32.0",
     "eslint-plugin-react": "7.26.0",
     "rimraf": "^3.0.2",
-    "standard-version": "^9.3.1",
-    "microbundle": "^0.13.3"
+    "rollup": "^2.59.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "standard-version": "^9.3.1"
   },
   "peerDependencies": {
     "next": ">=11.x"

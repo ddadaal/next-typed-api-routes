@@ -35,7 +35,7 @@ npm install --save @ddadaal/next-typed-api-routes
 2. Create a API route `src/pages/api/test.ts` with the following content
 
 ```ts
-import { route } from "@ddadaal/next-typed-api-routes";
+import { route } from "@ddadaal/next-typed-api-routes/lib/server";
 
 interface Value {
   articleId: number;

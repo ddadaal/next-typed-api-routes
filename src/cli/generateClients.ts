@@ -111,7 +111,7 @@ export interface GenerateApiClientsArgs {
 export async function generateClients({
   apiFilePath = "src/apis/api.ts",
   apiRoutesPath = "src/pages/api",
-  fetchImport = "@ddadaal/next-typed-api-routes",
+  fetchImport = "@ddadaal/next-typed-api-routes/lib/client",
   apiObjectName = "api",
 }: GenerateApiClientsArgs) {
 
