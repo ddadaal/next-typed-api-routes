@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](https://github.com/ddadaal/next-typed-api-routes/compare/v0.1.10...v0.2.0) (2021-11-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* separate client and server bundle for client tree shaking
+
+### Features
+
+* separate client and server bundle for client tree shaking ([b41667a](https://github.com/ddadaal/next-typed-api-routes/commit/b41667a01de7234158fdca2ebdc3345c84aad407))
+
 ### [0.1.10](https://github.com/ddadaal/next-typed-api-routes/compare/v0.1.9...v0.1.10) (2021-11-04)
 
 
