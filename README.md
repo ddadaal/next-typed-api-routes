@@ -35,7 +35,7 @@ npm install --save @ddadaal/next-typed-api-routes
 2. Create a API route `src/pages/api/test.ts` with the following content
 
 ```ts
-import { route } from "@ddadaal/next-typed-api-routes/lib/server";
+import { route } from "@ddadaal/next-typed-api-routes";
 
 interface Value {
   articleId: number;
@@ -156,6 +156,9 @@ interface TestSchema {
 
 - All schemas and used models must have globally unique name
 - Return a `{ [statusCode]: payload }` object in a route to take advantages of response body type check and faster JSON serialization
+- To ensure that client bundle doesn't include unnecessary packages (e.g. `ajv`, `fast-json-stringify`, which are only used in server side), 
+    - import packages only from `@ddadaal/next-typed-api-routes/lib/client` in client files, 
+    - import types with `import type` clause
 
 # Thanks
 
