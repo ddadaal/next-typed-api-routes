@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.1](https://github.com/ddadaal/next-typed-api-routes/compare/v0.2.0...v0.2.1) (2021-11-09)
+
+
+### Features
+
+* allow import from root package in server package ([6a2dabb](https://github.com/ddadaal/next-typed-api-routes/commit/6a2dabbfeeae22249fb561971f1a0cd337216a02))
+
+
+### Bug Fixes
+
+* **cli:** cli use wrong fetch import path ([81f0b9c](https://github.com/ddadaal/next-typed-api-routes/commit/81f0b9c845a11a3d04722acda46eb97b7405f8ef))
+
 ## [0.2.0](https://github.com/ddadaal/next-typed-api-routes/compare/v0.1.10...v0.2.0) (2021-11-06)
 
 
