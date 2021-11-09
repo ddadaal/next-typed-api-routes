@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.4](https://github.com/ddadaal/next-typed-api-routes/compare/v0.2.3...v0.2.4) (2021-11-09)
+
+
+### Bug Fixes
+
+* **cli:** api route url should not include index ([147fbb4](https://github.com/ddadaal/next-typed-api-routes/commit/147fbb4882018fa57a57f757cb7e23185f7a398f))
+
 ### [0.2.3](https://github.com/ddadaal/next-typed-api-routes/compare/v0.2.2...v0.2.3) (2021-11-09)
 
 
