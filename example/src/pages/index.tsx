@@ -19,15 +19,16 @@ const Home: NextPage = () => {
         </ul>
         <form onSubmit={async (e) => {
           e.preventDefault();
-          await api.login({ query: { username, password, testNumberQuery: 3 } })
+          const resp = await
+          api.login({ query: { username, password, testNumberQuery: 3 } })
             .httpError(401, ({ reason }) => {
-              alert("401 Failed. Reason: " + reason);
+              return "401 Failed. Reason: " + reason;
             })
-            .then(({ token }) => {
-              alert("Success. Token: " + token);
-            })
-            .catch((r) => alert("Other error." + JSON.stringify(r)))
-          ;
+            .catch((r) => alert("Other error." + JSON.stringify(r)));
+
+          alert("Completed." + resp);
+
+
         }}
         >
           <label htmlFor="Email">Email</label>

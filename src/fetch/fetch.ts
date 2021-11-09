@@ -95,12 +95,12 @@ function checkIsJson(resp: Response) {
 
 type RejectHandler<TRej> = (reason: any) => TRej | PromiseLike<TRej>;
 
-export class JsonFetchResultPromiseLike<T extends GeneralSchema>
-implements PromiseLike<SuccessResponse<T>> {
+export class JsonFetchResultPromiseLike<
+  T extends GeneralSchema, TRejValue = never
+>implements PromiseLike<SuccessResponse<T>> {
 
   private promise: Promise<Response>;
   private httpErrorHandler: Map<number, (error: HttpError) => void>;
-
 
   constructor(
     promise: Promise<Response>,
@@ -109,7 +109,7 @@ implements PromiseLike<SuccessResponse<T>> {
     this.httpErrorHandler = new Map();
   }
 
-  then<TSuc = T, TRej = never>(
+  then<TSuc = T, TRej = TRejValue>(
     onfulfilled?: ((value: SuccessResponse<T>) => TSuc | PromiseLike<TSuc>) | null,
     onrejected?: ((reason: any) => TRej | PromiseLike<TRej>) | null,
   ): Promise<TSuc | TRej> {
@@ -132,7 +132,7 @@ implements PromiseLike<SuccessResponse<T>> {
 
           const handler = this.httpErrorHandler.get(resp.status);
           if (handler) {
-            handler?.(payload);
+            onrejected?.(handler?.(payload));
           } else {
             throw payload;
           }
@@ -165,9 +165,20 @@ implements PromiseLike<SuccessResponse<T>> {
       });
   }
 
-  httpError<Code extends number>(
-    code: Code, handler: (err: T["responses"][Code]) => void
-  ): JsonFetchResultPromiseLike<T> {
+  /**
+   * Attach an error handler specific to a status code.
+   *
+   * The handler will be called when this code is received.
+   * The return value of the handler will be called with onrejected,
+   * and can be handled in a catch handler.
+   *
+   * @param code http status code
+   * @param handler handler for this type of code
+   * @returns A Promise
+   */
+  httpError<Code extends number, TRet>(
+    code: Code, handler: (err: T["responses"][Code]) => TRet
+  ): JsonFetchResultPromiseLike<T, TRet> {
     this.httpErrorHandler.set(code, handler);
     return this;
   }
