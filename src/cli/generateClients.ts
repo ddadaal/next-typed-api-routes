@@ -92,7 +92,7 @@ async function getApiObject(
           method: methodName,
           schemaName,
           interfaceName,
-          url: "/api/" + relativePath + "/" + filename,
+          url: "/api/" + relativePath + (filename === "index" ? "" : ("/" + filename)),
         });
       }
     } else {
