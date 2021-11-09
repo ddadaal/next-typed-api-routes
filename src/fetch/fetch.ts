@@ -96,11 +96,11 @@ function checkIsJson(resp: Response) {
 type RejectHandler<TRej> = (reason: any) => TRej | PromiseLike<TRej>;
 
 export class JsonFetchResultPromiseLike<
-  T extends GeneralSchema, TRejValue = never
->implements PromiseLike<SuccessResponse<T>> {
+  T extends GeneralSchema, THttpErrorHandlerValue = SuccessResponse<T>
+>implements PromiseLike<SuccessResponse<T> | THttpErrorHandlerValue> {
 
   private promise: Promise<Response>;
-  private httpErrorHandler: Map<number, (error: HttpError) => void>;
+  private httpErrorHandler: Map<number, (error: HttpError) => unknown>;
 
   constructor(
     promise: Promise<Response>,
@@ -109,8 +109,10 @@ export class JsonFetchResultPromiseLike<
     this.httpErrorHandler = new Map();
   }
 
-  then<TSuc = T, TRej = TRejValue>(
-    onfulfilled?: ((value: SuccessResponse<T>) => TSuc | PromiseLike<TSuc>) | null,
+  then<TSuc = SuccessResponse<T> | THttpErrorHandlerValue, TRej = unknown>(
+    onfulfilled?: (
+      (value: SuccessResponse<T> | THttpErrorHandlerValue) =>
+      TSuc | PromiseLike<TSuc>) | null,
     onrejected?: ((reason: any) => TRej | PromiseLike<TRej>) | null,
   ): Promise<TSuc | TRej> {
     return this.promise
@@ -132,7 +134,8 @@ export class JsonFetchResultPromiseLike<
 
           const handler = this.httpErrorHandler.get(resp.status);
           if (handler) {
-            onrejected?.(handler?.(payload));
+            const val = handler?.(payload) as THttpErrorHandlerValue;
+            return onfulfilled ? onfulfilled(val) : val;
           } else {
             throw payload;
           }
@@ -169,8 +172,7 @@ export class JsonFetchResultPromiseLike<
    * Attach an error handler specific to a status code.
    *
    * The handler will be called when this code is received.
-   * The return value of the handler will be called with onrejected,
-   * and can be handled in a catch handler.
+   * The return value of the handler will be returned on onfulfilled.
    *
    * @param code http status code
    * @param handler handler for this type of code
@@ -180,7 +182,7 @@ export class JsonFetchResultPromiseLike<
     code: Code, handler: (err: T["responses"][Code]) => TRet
   ): JsonFetchResultPromiseLike<T, TRet> {
     this.httpErrorHandler.set(code, handler);
-    return this;
+    return this as any;
   }
 
   catch<TRej = never>(onrejected?: RejectHandler<TRej> | null) {
