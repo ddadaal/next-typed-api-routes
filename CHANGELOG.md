@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.3](https://github.com/ddadaal/next-typed-api-routes/compare/v0.2.2...v0.2.3) (2021-11-09)
+
+
+### Features
+
+* **client:** improve fetch httpError type ([ea0549c](https://github.com/ddadaal/next-typed-api-routes/commit/ea0549cda452a671a13f1389cb4790e2a7f61f9b))
+
 ### [0.2.2](https://github.com/ddadaal/next-typed-api-routes/compare/v0.2.1...v0.2.2) (2021-11-09)
 
 
