@@ -21,7 +21,10 @@ yargs(hideBin(process.argv))
         default: "src/apis/api.ts",
       },
       apiRoutesPath: { type: "string", default: "src/pages/api" },
-      fetchImport: { type: "string", default: "@ddadaal/next-typed-api-routes" },
+      fetchImport: {
+        type: "string",
+        default: "@ddadaal/next-typed-api-routes/lib/client",
+      },
       apiObjectName: { type: "string", default: "api" },
     });
   }, (argv) => {
