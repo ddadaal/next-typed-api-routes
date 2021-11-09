@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.2](https://github.com/ddadaal/next-typed-api-routes/compare/v0.2.1...v0.2.2) (2021-11-09)
+
+
+### Features
+
+* improve http error handler ([0d84e87](https://github.com/ddadaal/next-typed-api-routes/commit/0d84e8762a1798a8ed044eeeb46f93107e410532))
+
 ### [0.2.1](https://github.com/ddadaal/next-typed-api-routes/compare/v0.2.0...v0.2.1) (2021-11-09)
 
 
