@@ -95,9 +95,8 @@ function checkIsJson(resp: Response) {
 
 type RejectHandler<TRej> = (reason: any) => TRej | PromiseLike<TRej>;
 
-export class JsonFetchResultPromiseLike<
-  T extends GeneralSchema, THttpErrorHandlerValue = SuccessResponse<T>
->implements PromiseLike<SuccessResponse<T> | THttpErrorHandlerValue> {
+export class JsonFetchResultPromiseLike<T extends GeneralSchema>
+implements PromiseLike<SuccessResponse<T>> {
 
   private promise: Promise<Response>;
   private httpErrorHandler: Map<number, (error: HttpError) => unknown>;
@@ -109,10 +108,8 @@ export class JsonFetchResultPromiseLike<
     this.httpErrorHandler = new Map();
   }
 
-  then<TSuc = SuccessResponse<T> | THttpErrorHandlerValue, TRej = unknown>(
-    onfulfilled?: (
-      (value: SuccessResponse<T> | THttpErrorHandlerValue) =>
-      TSuc | PromiseLike<TSuc>) | null,
+  then<TSuc = SuccessResponse<T> , TRej = unknown>(
+    onfulfilled?: ((value: SuccessResponse<T> ) => TSuc | PromiseLike<TSuc>) | null,
     onrejected?: ((reason: any) => TRej | PromiseLike<TRej>) | null,
   ): Promise<TSuc | TRej> {
     return this.promise
@@ -134,8 +131,8 @@ export class JsonFetchResultPromiseLike<
 
           const handler = this.httpErrorHandler.get(resp.status);
           if (handler) {
-            const val = handler?.(payload) as THttpErrorHandlerValue;
-            return onfulfilled ? onfulfilled(val) : val;
+            const val = handler?.(payload);
+            return onrejected ? onrejected(val) : val;
           } else {
             throw payload;
           }
@@ -172,15 +169,15 @@ export class JsonFetchResultPromiseLike<
    * Attach an error handler specific to a status code.
    *
    * The handler will be called when this code is received.
-   * The return value of the handler will be returned on onfulfilled.
+   * The return value of the handler will be called with onrejected.
    *
    * @param code http status code
    * @param handler handler for this type of code
    * @returns A Promise
    */
-  httpError<Code extends number, TRet>(
-    code: Code, handler: (err: T["responses"][Code]) => TRet
-  ): JsonFetchResultPromiseLike<T, TRet> {
+  httpError<Code extends number>(
+    code: Code, handler: (err: T["responses"][Code]) => any
+  ): JsonFetchResultPromiseLike<T> {
     this.httpErrorHandler.set(code, handler);
     return this as any;
   }
