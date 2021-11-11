@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.10](https://github.com/ddadaal/next-typed-api-routes/compare/v0.2.9...v0.2.10) (2021-11-11)
+
+
+### Bug Fixes
+
+* **fetch:** handle 204 no content response ([64674a9](https://github.com/ddadaal/next-typed-api-routes/commit/64674a958f0a466cfda1177cf6c9a14597a034f8))
+
 ### [0.2.9](https://github.com/ddadaal/next-typed-api-routes/compare/v0.2.8...v0.2.9) (2021-11-11)
 
 
