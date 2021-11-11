@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.8](https://github.com/ddadaal/next-typed-api-routes/compare/v0.2.7...v0.2.8) (2021-11-11)
+
+
+### Bug Fixes
+
+* **client:** add missing export ([09ced34](https://github.com/ddadaal/next-typed-api-routes/commit/09ced34dbbd24255b65d5af0007eab20977daed5))
+* **fetch:** http handler wrong payload ([6b4e6f2](https://github.com/ddadaal/next-typed-api-routes/commit/6b4e6f27392af01632c55f65c1f85c5a294a902d))
+
 ### [0.2.7](https://github.com/ddadaal/next-typed-api-routes/compare/v0.2.6...v0.2.7) (2021-11-11)
 
 
