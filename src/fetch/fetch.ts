@@ -96,7 +96,11 @@ implements PromiseLike<SuccessResponse<T>> {
     return this.promise
       .then(async (resp) => {
         if (resp.ok) {
-          if (checkIsJson(resp)) {
+          if (resp.status === 204) {
+            const obj = null as any;
+            successEvent.execute({ status: 204, data: obj });
+            return onfulfilled ? onfulfilled(obj) : obj;
+          } else if (checkIsJson(resp)) {
             const obj = await resp.json();
             successEvent.execute({ status: resp.status, data: obj });
             return onfulfilled ? onfulfilled(obj) : obj;

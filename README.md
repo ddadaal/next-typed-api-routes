@@ -141,11 +141,12 @@ interface TestSchema {
   responses: {
     // Key as response code. 
     // Only one [200, 300) response should exist. It will be considered by clients as the success response
+    // If the success response has no payload, the status code must be 204.
     200: {
       // Supports most type constructs
       property?: string | number | AnotherInterface | Pick<{ number: string }, "number">;
     };
-    
+
     // If the code has no payload, set the type to null
     404: null;
   }
