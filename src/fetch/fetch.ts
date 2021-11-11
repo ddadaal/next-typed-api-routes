@@ -6,6 +6,7 @@ import { removeNullOrUndefinedKey } from "./utils";
 import { failEvent, finallyEvent, prefetchEvent, successEvent } from "./events";
 import { parseQueryToQuerystring } from "./parseQueryToQuerystring";
 import { replacePathArgs } from "./replacePathArgs";
+import { TYPE_ERROR, HttpError, FETCH_ERROR } from "./HttpError";
 
 function isServer() {
   return typeof window === "undefined";
@@ -60,26 +61,6 @@ export interface FetchInfo {
 
 export type JsonFetchResult<TResp> = TResp;
 
-const SERVER_ERROR_STATUS = -2;
-const CLIENT_ERROR_STATUS = -1;
-
-export class HttpError<T = object | undefined> {
-  data: T | undefined;
-  status: number;
-  text?: string;
-
-  get isServerError() { return this.status === SERVER_ERROR_STATUS; }
-  get isClientError() { return this.status === CLIENT_ERROR_STATUS; }
-}
-
-export function makeHttpError<T>(status: number, data: T, text?: string) {
-  const error = new HttpError<T>();
-  error.data = data;
-  error.status = status;
-  error.text = text;
-  return error;
-}
-
 function tryParseJson(text: string): object | undefined {
   try {
     return JSON.parse(text);
@@ -125,15 +106,17 @@ implements PromiseLike<SuccessResponse<T>> {
           }
         } else {
           const text = await resp.text();
-          const payload = makeHttpError(resp.status, tryParseJson(text), text);
-
-          failEvent.execute(payload);
+          const payload = new HttpError(resp.status, tryParseJson(text), text);
 
           const handler = this.httpErrorHandler.get(resp.status);
+
           if (handler) {
-            const val = handler?.(payload);
+            // if a handler is registered to the code,
+            // don't fire failEvent
+            const val = handler(payload);
             return onrejected ? onrejected(val) : val;
           } else {
+            failEvent.execute(payload);
             throw payload;
           }
         }
@@ -148,17 +131,14 @@ implements PromiseLike<SuccessResponse<T>> {
         };
 
         if (r.name === "FetchError") {
-          const payload = makeHttpError(SERVER_ERROR_STATUS,
-            JSON.parse(JSON.stringify(r)));
+          const payload = new HttpError(FETCH_ERROR, r);
           failEvent.execute(payload);
-          handleOrThrow(payload);
-        }
-        // TypeError is client side fetch error
-        if (r instanceof TypeError) {
-          const payload = makeHttpError(CLIENT_ERROR_STATUS, r);
+        } else if (r instanceof TypeError) {
+          const payload = new HttpError(TYPE_ERROR, r);
           failEvent.execute(payload);
-          handleOrThrow(payload);
         }
+
+        // already handle or throw
         handleOrThrow(r);
       }).finally(() => {
         finallyEvent.execute(undefined);

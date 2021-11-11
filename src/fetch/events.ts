@@ -1,4 +1,5 @@
-import type { HttpError } from "./fetch";
+/* eslint-disable max-len */
+import type { HttpError } from "./HttpError";
 
 class Event<TArgs> {
   handlers = [] as Array<(args: TArgs) => void>;
@@ -18,6 +19,15 @@ class Event<TArgs> {
 
 export const prefetchEvent = new Event<undefined>();
 export const successEvent = new Event<{ status: number; data: any }>();
+
+/**
+ * Fired when
+ * - FetchError is raised (node-fetch exclusive, https://github.com/node-fetch/node-fetch/blob/main/docs/ERROR-HANDLING.md)
+ * - TypeError is raised (https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch#checking_that_the_fetch_was_successful)
+ * - Responses outside of [200, 300) is received
+ *
+ * Note, errors handled by httpError will not cause failEvent to fire.
+ */
 export const failEvent = new Event<HttpError>();
 export const finallyEvent = new Event<undefined>();
 
