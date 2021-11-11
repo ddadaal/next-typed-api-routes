@@ -23,3 +23,5 @@ src
 .travis.yml
 
 rollup*
+
+lib/schemas.json
