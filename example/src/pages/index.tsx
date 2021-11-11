@@ -17,12 +17,16 @@ const Home: NextPage = () => {
           <li>The password must be of length &gt;= 8</li>
           <li>The username and password must be equal.</li>
         </ul>
+        <p>If the password === nullnull, response will be 403 with no body.</p>
         <form onSubmit={async (e) => {
           e.preventDefault();
           const resp = await
           api.login({ query: { username, password, testNumberQuery: 3 } })
             .httpError(401, ({ reason }) => {
               alert("401 Failed. Reason: " + reason);
+            })
+            .httpError(403, () => {
+              alert("403");
             });
 
           alert("Completed." + resp);

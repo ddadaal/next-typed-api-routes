@@ -64,11 +64,12 @@ export function route<S extends Schema<any, any, any>>(
 
       const respBody = resp[code];
 
-      if (code === "204") {
+      if (code === "204" || respBody === null) {
         res.send(undefined);
       } else if (respBody) {
         const serializer = validator.responseSerializers?.get(code);
-        res.send(serializer ? serializer(respBody) : respBody);
+        const body = serializer ? serializer(respBody) : respBody;
+        res.send(body);
       }
 
     }
