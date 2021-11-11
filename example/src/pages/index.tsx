@@ -15,20 +15,17 @@ const Home: NextPage = () => {
         <ul>
           <li>The username must be in email format.</li>
           <li>The password must be of length &gt;= 8</li>
-          <li>The password must be equal.</li>
+          <li>The username and password must be equal.</li>
         </ul>
         <form onSubmit={async (e) => {
           e.preventDefault();
           const resp = await
           api.login({ query: { username, password, testNumberQuery: 3 } })
             .httpError(401, ({ reason }) => {
-              return "401 Failed. Reason: " + reason;
-            })
-            .catch((r) => alert("Other error." + JSON.stringify(r)));
+              alert("401 Failed. Reason: " + reason);
+            });
 
           alert("Completed." + resp);
-
-
         }}
         >
           <label htmlFor="Email">Email</label>
