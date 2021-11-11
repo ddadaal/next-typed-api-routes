@@ -80,7 +80,7 @@ export class JsonFetchResultPromiseLike<T extends GeneralSchema>
 implements PromiseLike<SuccessResponse<T>> {
 
   private promise: Promise<Response>;
-  private httpErrorHandler: Map<number, (error: HttpError) => unknown>;
+  private httpErrorHandler: Map<number, (error: any) => unknown>;
 
   constructor(
     promise: Promise<Response>,
@@ -113,7 +113,7 @@ implements PromiseLike<SuccessResponse<T>> {
           if (handler) {
             // if a handler is registered to the code,
             // don't fire failEvent
-            const val = handler(payload);
+            const val = handler(payload.data);
             return onrejected ? onrejected(val) : val;
           } else {
             failEvent.execute(payload);
