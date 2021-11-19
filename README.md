@@ -1,6 +1,7 @@
 # @ddadaal/next-typed-api-routes
 
-![npm](https://img.shields.io/npm/v/@ddadaal/next-typed-api-routes)
+![cli](https://img.shields.io/npm/v/@ddadaal/next-typed-api-routes-runtime?label=runtime)
+![cli](https://img.shields.io/npm/v/@ddadaal/next-typed-api-routes-cli?label=cli)
 
 Write a `Schema` interface in your API route file, and you get
 
@@ -10,7 +11,7 @@ Write a `Schema` interface in your API route file, and you get
 
 all at one command!
 
-Migrate from v0.2? See [migration guide](#migrate-from-v02)!
+Migrate from v0.2? See the [migration guide](#migrate-from-v02)!
 
 # Requirement for the target Next.js Project
 
@@ -71,7 +72,7 @@ export default route<TestApiSchema>("TestApiSchema", async (req) => {
 
 3. Run `npx ntar schema && npx ntar client`
 
-`schemas.json` will be generated at cwd. You should never edit it directly. The project cannot start without this file.
+`api-routes-schemas.json` will be generated at cwd. You should never edit it directly. The project cannot start without this file.
 
 `src/apis/api.ts` will be generated at `src/apis`.
 
@@ -150,7 +151,7 @@ interface TestSchema {
 - All schemas and used models must have globally unique name
 - Return a `{ [statusCode]: payload }` object in a route to take advantages of response body type check and faster JSON serialization
 - To ensure that client bundle doesn't include unnecessary packages (e.g. `ajv`, `fast-json-stringify`, which are only used in server side), 
-    - import packages only from `@ddadaal/next-typed-api-routes/lib/client` in client files, 
+    - import packages only from `@ddadaal/next-typed-api-routes-runtime/lib/client` in client files, 
     - import types with `import type` clause
 
 # Thanks
@@ -160,33 +161,35 @@ interface TestSchema {
 - [`fast-json-stringify`](https://github.com/fastify/fast-json-stringify) for faster JSON response serialization
 - [`fastify`](https://github.com/fastify/fastify) for inspiration or unified validation and serialization using JSON schema
 
-# Roadmap
-
-- [ ] More configurations
-
-# Development
-
-```
-npm install
-npm install --no-save next
-```
 
 # Migrate from v0.2
 
-Since 0.3, this package is separated to [cli](packages/cli) and [runtime](packages/runtime) and organized as a monorepo. To migrate existing codebase, run the following commands
+Since 0.3, this package is separated to [cli](packages/cli) and [runtime](packages/runtime) and organized as a monorepo. To migrate existing codebase, 
+
+1. Delete previous dependency
 
 ```bash
-# Delete previous dependency
 npm uninstall --save @ddadaal/next-typed-api-routes
+```
 
-# Install current packages
+2. Install current packages
+
+```bash
 npm install --save @ddadaal/next-typed-api-routes-runtime
 npm install -D @ddadaal/next-typed-api-routes-cli
+```
 
-# Regenerate API clients and schema
+3. Replace all imports from `@ddadaal/next-typed-api-routes` to `@ddadaal/next-typed-api-routes-runtime`. Editors and IDE can be of great help.
+
+4. Regenerate API clients and schema
+
+```bash
 npx ntar schema && npx ntar client
 ```
 
+# Roadmap
+
+- [ ] More configurations
 
 # License
 
