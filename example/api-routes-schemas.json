@@ -1,0 +1,143 @@
+{
+  "routes": {
+    "LoginSchema": {
+      "type": "object",
+      "properties": {
+        "method": {
+          "type": "string",
+          "const": "GET"
+        },
+        "query": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "testNumberQuery": {
+              "type": "number"
+            },
+            "username": {
+              "type": "string",
+              "description": "The username",
+              "format": "idn-email",
+              "maxLength": 20
+            },
+            "password": {
+              "type": "string",
+              "description": "The password",
+              "minLength": 8
+            }
+          },
+          "required": [
+            "password",
+            "username"
+          ]
+        },
+        "responses": {
+          "type": "object",
+          "properties": {
+            "200": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "token"
+              ],
+              "additionalProperties": false
+            },
+            "401": {
+              "type": "object",
+              "properties": {
+                "reason": {
+                  "type": "string",
+                  "enum": [
+                    "NotExists",
+                    "WrongPassword"
+                  ]
+                }
+              },
+              "required": [
+                "reason"
+              ],
+              "additionalProperties": false
+            },
+            "403": {
+              "type": "null"
+            }
+          },
+          "required": [
+            "200",
+            "401",
+            "403"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "method",
+        "query",
+        "responses"
+      ],
+      "additionalProperties": false,
+      "$id": "LoginSchema",
+      "title": "LoginSchema"
+    },
+    "RegisterSchema": {
+      "type": "object",
+      "properties": {
+        "method": {
+          "type": "string",
+          "const": "POST"
+        },
+        "body": {
+          "type": "object",
+          "properties": {
+            "username": {
+              "type": "string",
+              "maxLength": 50
+            },
+            "password": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "username",
+            "password"
+          ],
+          "additionalProperties": false
+        },
+        "responses": {
+          "type": "object",
+          "properties": {
+            "200": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "token"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "200"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "method",
+        "body",
+        "responses"
+      ],
+      "additionalProperties": false,
+      "$id": "RegisterSchema",
+      "title": "RegisterSchema"
+    }
+  },
+  "models": {}
+}

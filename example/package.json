@@ -2,20 +2,23 @@
   "name": "example",
   "version": "0.1.0",
   "private": true,
+  "bin": {
+    "ntar": "lib/index.js"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "postinstall": "ntar schema"
+    "lint": "next lint"
   },
   "dependencies": {
-    "@ddadaal/next-typed-api-routes": "file:../",
+    "@ddadaal/next-typed-api-routes-runtime": "file:../packages/runtime",
     "next": "12.0.4",
     "react": "17.0.2",
     "react-dom": "17.0.2"
   },
   "devDependencies": {
+    "@ddadaal/next-typed-api-routes-cli": "file:../packages/cli",
     "@next/bundle-analyzer": "^12.0.4",
     "@types/react": "17.0.35",
     "eslint": "<8.0.0",

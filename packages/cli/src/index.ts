@@ -23,7 +23,7 @@ yargs(hideBin(process.argv))
       apiRoutesPath: { type: "string", default: "src/pages/api" },
       fetchImport: {
         type: "string",
-        default: "@ddadaal/next-typed-api-routes/lib/client",
+        default: "@ddadaal/next-typed-api-routes-runtime/lib/client",
       },
       apiObjectName: { type: "string", default: "api" },
     });

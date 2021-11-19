@@ -1,0 +1,36 @@
+{
+  "name": "@ddadaal/next-typed-api-routes-cli",
+  "version": "0.2.12",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "ntar": "lib/index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rimraf lib && tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ddadaal/next-typed-api-routes.git"
+  },
+  "keywords": [
+    "next",
+    "typescript"
+  ],
+  "author": {
+    "name": "Chen Junda",
+    "email": "ddadaal@outlook.com",
+    "url": "https://ddadaal.me"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ddadaal/next-typed-api-routes/issues"
+  },
+  "dependencies": {
+    "tslib": "^2.3.1",
+    "ts-json-schema-generator": "^0.97.0",
+    "typescript": "~4.4.3",
+    "yargs": "^17.2.1"
+  }
+}

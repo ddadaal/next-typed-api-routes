@@ -25,3 +25,5 @@ src
 rollup*
 
 lib/schemas.json
+tsconfig.tsbuildinfo
+.rollup.cache

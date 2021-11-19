@@ -1,5 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { route } from "@ddadaal/next-typed-api-routes";
+import { route } from "@ddadaal/next-typed-api-routes-runtime";
 
 export interface RegisterSchema {
   method: "POST";

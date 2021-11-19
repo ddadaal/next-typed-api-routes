@@ -3,7 +3,6 @@
     "jsx": "react",
     "module": "es6",
     "target": "es5",
-    "outDir": "lib",
     "moduleResolution": "node",
     "noImplicitReturns": true,
     "noImplicitThis": true,
@@ -14,17 +13,10 @@
     "sourceMap": true,
     "declaration": true,
     "skipLibCheck": true,
-    "declarationDir": ".",
     "importHelpers": true,
     "resolveJsonModule": true,
     "strict": false,
-    "newLine": "lf"
-  },
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+    "newLine": "lf",
+    "incremental": true
+  }
 }

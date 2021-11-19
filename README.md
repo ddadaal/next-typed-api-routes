@@ -1,4 +1,4 @@
-# next-typed-api-routes
+# @ddadaal/next-typed-api-routes
 
 ![npm](https://img.shields.io/npm/v/@ddadaal/next-typed-api-routes)
 
@@ -9,6 +9,8 @@ Write a `Schema` interface in your API route file, and you get
 - faster JSON response serialization
 
 all at one command!
+
+Migrate from v0.2? See [migration guide](#migrate-from-v02)!
 
 # Requirement for the target Next.js Project
 
@@ -26,16 +28,17 @@ all at one command!
 
 # Get Started
 
-1. Install the package in your Next.js TypeScript project
+1. Install the packages in your Next.js TypeScript project
 
 ```bash
-npm install --save @ddadaal/next-typed-api-routes
+npm install --save @ddadaal/next-typed-api-routes-runtime
+npm install -D @ddadaal/next-typed-api-routes-cli
 ```
 
 2. Create a API route `src/pages/api/test.ts` with the following content
 
 ```ts
-import { route } from "@ddadaal/next-typed-api-routes";
+import { route } from "@ddadaal/next-typed-api-routes-runtime";
 
 interface Value {
   articleId: number;
@@ -68,7 +71,7 @@ export default route<TestApiSchema>("TestApiSchema", async (req) => {
 
 3. Run `npx ntar schema && npx ntar client`
 
-`schemas.json` will be generated at the module folder under `node_modules`. You should never edit it directly. The project cannot start without this file.
+`schemas.json` will be generated at cwd. You should never edit it directly. The project cannot start without this file.
 
 `src/apis/api.ts` will be generated at `src/apis`.
 
@@ -80,18 +83,6 @@ import { api } from "src/apis/api";
 api.testApi({ query: {}, body: { test: "123" } })
   .httpError(403, ({ message }) => { console.log(403, message); })
   .then(({ test }) => { console.log(test); });
-```
-
-5. **Important** Add `ntar schema` to `postinstall` script in your `package.json`
-
-so that `schemas.json` will be generated every time your project is `npm install`ed. 
-
-```json
-{
-  "scripts": {
-    "postinstall": "ntar schema"
-  }
-}
 ```
 
 # Updating existing API Routes
@@ -112,7 +103,8 @@ Run `ntar client` when the HTTP method or URL or the name of schema is changed.
 The shape of Schema interface is defined as follows:
 
 ```ts
-// The name of the schema must be unique across the whole project
+// The name of the schema must end with "Schema"
+// and must be unique across the whole project
 interface TestSchema {
   // Required. Must be a valid CAPITALIZED string literal type of HTTP method (GET, POST, PATCH)
   method: "POST";
@@ -178,6 +170,23 @@ interface TestSchema {
 npm install
 npm install --no-save next
 ```
+
+# Migrate from v0.2
+
+Since 0.3, this package is separated to [cli](packages/cli) and [runtime](packages/runtime) and organized as a monorepo. To migrate existing codebase, run the following commands
+
+```bash
+# Delete previous dependency
+npm uninstall --save @ddadaal/next-typed-api-routes
+
+# Install current packages
+npm install --save @ddadaal/next-typed-api-routes-runtime
+npm install -D @ddadaal/next-typed-api-routes-cli
+
+# Regenerate API clients and schema
+npx ntar schema && npx ntar client
+```
+
 
 # License
 

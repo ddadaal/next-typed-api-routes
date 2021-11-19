@@ -1,0 +1,45 @@
+{
+  "name": "@ddadaal/next-typed-api-routes-runtime",
+  "version": "0.2.12",
+  "description": "",
+  "main": "lib/server.js",
+  "types": "lib/server.js",
+  "scripts": {
+    "build": "rimraf lib && rollup --config rollup.config.ts --configPlugin typescript"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ddadaal/next-typed-api-routes.git"
+  },
+  "keywords": [
+    "next",
+    "typescript"
+  ],
+  "author": {
+    "name": "Chen Junda",
+    "email": "ddadaal@outlook.com",
+    "url": "https://ddadaal.me"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ddadaal/next-typed-api-routes/issues"
+  },
+  "dependencies": {
+    "ajv": "^8.8.1",
+    "ajv-formats": "^2.1.1",
+    "ajv-formats-draft2019": "^1.6.1",
+    "fast-json-stringify": "^2.7.12",
+    "long": "^5.1.0",
+    "tslib": "^2.3.1"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-typescript": "^8.3.0",
+    "rollup": "^2.60.0",
+    "rollup-plugin-terser": "^7.0.2"
+  },
+  "peerDependencies": {
+    "next": ">=11.x"
+  }
+}

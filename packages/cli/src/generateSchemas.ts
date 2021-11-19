@@ -50,7 +50,7 @@ interface GenerateSchemaArgs {
   tsconfigPath?: string;
 }
 
-const SCHEMAS_JSON_PATH = path.join(__dirname, "../schemas.json");
+const SCHEMAS_JSON_PATH = path.resolve("api-routes-schemas.json");
 
 export async function generateSchemasJson({
   apiRoutesPath = "src/pages/api",

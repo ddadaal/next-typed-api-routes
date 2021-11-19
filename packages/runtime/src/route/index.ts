@@ -2,10 +2,10 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import type { Schema } from "../types/schema";
 import type { ErrorObject } from "ajv";
 import { createValidatorsFromSchema } from "./schemas";
+import fs from "fs";
 
 // Hardcoded schemas.json path
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const schemas = require("./schemas.json");
+const schemas = JSON.parse(fs.readFileSync("./api-routes-schemas.json", "utf8"));
 
 type ValueOf<T> = T[keyof T];
 

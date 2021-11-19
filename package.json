@@ -2,41 +2,13 @@
   "name": "@ddadaal/next-typed-api-routes",
   "version": "0.2.12",
   "description": "Make Next.js API Routes strongly typed with routes and clients type completion and auto-generated parameter validation",
-  "main": "lib/server.js",
-  "types": "lib/server.d.ts",
-  "bin": {
-    "ntar": "lib/cli/index.js"
-  },
   "scripts": {
-    "build-client": "rollup --config rollup.client.ts --configPlugin typescript",
-    "build-server": "rollup --config rollup.server.ts --configPlugin typescript",
-    "build-cli": "tsc --project tsconfig.cli.json",
-    "build": "rimraf lib && npm run build-cli && npm run build-client && npm run build-server",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "release": "standard-version"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ddadaal/next-typed-api-routes.git"
-  },
-  "keywords": [
-    "next",
-    "typescript"
-  ],
-  "author": {
-    "name": "Chen Junda",
-    "email": "ddadaal@outlook.com",
-    "url": "https://ddadaal.me"
-  },
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/ddadaal/next-typed-api-routes/issues"
+    "postinstall": "lerna bootstrap",
+    "build": "lerna run build"
   },
   "homepage": "https://github.com/ddadaal/next-typed-api-routes#readme",
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^21.0.1",
-    "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-typescript": "^8.3.0",
+    "lerna": "^4.0.0",
     "@types/eslint": "^8.2.0",
     "@types/jest": "27.0.2",
     "@types/node": "^16.11.7",
@@ -45,21 +17,9 @@
     "eslint": "^8.2.0",
     "eslint-plugin-react": "7.27.0",
     "rimraf": "^3.0.2",
-    "rollup": "^2.60.0",
-    "rollup-plugin-terser": "^7.0.2",
     "standard-version": "^9.3.2"
   },
-  "peerDependencies": {
-    "next": ">=11.x"
-  },
-  "dependencies": {
-    "ajv": "^8.8.1",
-    "ajv-formats": "^2.1.1",
-    "ajv-formats-draft2019": "^1.6.1",
-    "fast-json-stringify": "^2.7.12",
-    "tslib": "^2.3.1",
-    "ts-json-schema-generator": "^0.97.0",
-    "typescript": "~4.4.3",
-    "yargs": "^17.2.1"
-  }
+  "workspaces": [
+    "packages/**"
+  ]
 }
