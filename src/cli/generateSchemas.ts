@@ -31,8 +31,7 @@ function changeRef(schema: object) {
 
 export class IgnoreArrowFunctionParser implements SubNodeParser {
   supportsNode(node): boolean {
-    // debugger tells the async () => {} node is of kind 210
-    return node.kind === ts.SyntaxKind.ParenthesizedExpression;
+    return ts.isArrowFunction(node);
   }
   createType(): BaseType | undefined {
     return undefined;

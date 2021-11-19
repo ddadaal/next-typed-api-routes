@@ -13,6 +13,7 @@
     "downlevelIteration": true,
     "sourceMap": true,
     "declaration": true,
+    "skipLibCheck": true,
     "declarationDir": ".",
     "importHelpers": true,
     "resolveJsonModule": true,
