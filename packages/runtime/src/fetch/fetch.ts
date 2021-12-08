@@ -89,7 +89,7 @@ implements PromiseLike<SuccessResponse<T>> {
     this.httpErrorHandler = new Map();
   }
 
-  then<TSuc = SuccessResponse<T> , TRej = unknown>(
+  then<TSuc = SuccessResponse<T> , TRej = never>(
     onfulfilled?: ((value: SuccessResponse<T> ) => TSuc | PromiseLike<TSuc>) | null,
     onrejected?: ((reason: any) => TRej | PromiseLike<TRej>) | null,
   ): Promise<TSuc | TRej> {
