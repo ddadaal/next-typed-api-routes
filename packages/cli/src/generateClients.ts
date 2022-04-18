@@ -131,13 +131,16 @@ export async function generateClients({
   const apiObjDeclaration = `
 export const ${apiObjectName} = {
 ${endpoints.map((e) =>
-    `  ${e.schemaName}: fromApi<${e.interfaceName}>("${e.method}", "${e.url}"),`
+    // eslint-disable-next-line max-len
+    `  ${e.schemaName}: fromApi<${e.interfaceName}>("${e.method}", join(process.env.NEXT_PUBLIC_BASE_PATH || "", "${e.url}")),`
   ).join(EOL)}
 };
   `;
 
-  const fetchApiImportDeclaration =
-    `import { fromApi } from "${fetchImport}";`;
+  const fetchApiImportDeclaration = `
+import { fromApi } from "${fetchImport}";
+import { join } from "path";
+`;
 
   const importDeclarations = imports.map(({ relativePath, interfaceName }) => (
     `import type { ${interfaceName} } from "${apiRoutesPath + relativePath}";`

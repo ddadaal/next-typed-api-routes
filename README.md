@@ -146,6 +146,19 @@ interface TestSchema {
 }
 ```
 
+# Custom basePath
+
+Custom basePath is now supported. The generated API client will use `NEXT_PUBLIC_BASE_PATH` env for the base path for all the api routes. If you are upgrading from an older version, you should run `npx ntar client` to regenerate the api file to leverage this feature. 
+
+To keep the basePath config consistent in both Next.js and this library, you can set `basePath: process.env.NEXT_PUBLIC_BASE_PATH` in the `next.config.js`, and use the `NEXT_PUBLIC_BASE_PATH` env. Check out [the Next.js doc](https://nextjs.org/docs/api-reference/next.config.js/basepath) to configure basePath for Next.js.
+
+```js
+// next.config.js
+module.exports = {
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH,
+}
+```
+
 # Tips
 
 - All schemas and used models must have globally unique name

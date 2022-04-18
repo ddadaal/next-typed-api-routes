@@ -8,4 +8,5 @@ const external = (child) =>
 /** @type {import('next').NextConfig} */
 module.exports = external({
   reactStrictMode: true,
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH,
 })
