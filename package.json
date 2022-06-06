@@ -3,12 +3,10 @@
   "version": "0.2.12",
   "description": "Make Next.js API Routes strongly typed with routes and clients type completion and auto-generated parameter validation",
   "scripts": {
-    "postinstall": "lerna bootstrap",
-    "build": "lerna run build"
+    "build": "pnpm -r run build"
   },
   "homepage": "https://github.com/ddadaal/next-typed-api-routes#readme",
   "devDependencies": {
-    "lerna": "^4.0.0",
     "@types/eslint": "^8.2.0",
     "@types/jest": "27.0.2",
     "@types/node": "^16.11.7",
@@ -17,9 +15,11 @@
     "eslint": "^8.2.0",
     "eslint-plugin-react": "7.27.0",
     "rimraf": "^3.0.2",
-    "standard-version": "^9.3.2"
+    "standard-version": "^9.3.2",
+    "typescript": "4.7.3"
   },
   "workspaces": [
     "packages/**"
-  ]
+  ],
+  "packageManager": "pnpm@7.1.9"
 }

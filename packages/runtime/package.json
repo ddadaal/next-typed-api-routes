@@ -4,11 +4,11 @@
   "description": "",
   "main": "lib/server.js",
   "types": "lib/server.js",
-  "scripts": {
-    "build": "rimraf lib && rollup --config rollup.config.ts --configPlugin typescript"
-  },
   "publishConfig": {
     "access": "public"
+  },
+  "scripts": {
+    "build": "rimraf lib && rollup --config rollup.config.ts --configPlugin typescript"
   },
   "repository": {
     "type": "git",
@@ -40,7 +40,8 @@
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-typescript": "^8.3.0",
     "rollup": "^2.60.0",
-    "rollup-plugin-terser": "^7.0.2"
+    "rollup-plugin-terser": "^7.0.2",
+    "typescript": "4.7.3"
   },
   "peerDependencies": {
     "next": ">=11.x"

@@ -2,9 +2,6 @@
   "name": "example",
   "version": "0.1.0",
   "private": true,
-  "bin": {
-    "ntar": "lib/index.js"
-  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -12,17 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@ddadaal/next-typed-api-routes-runtime": "file:../packages/runtime",
+    "@ddadaal/next-typed-api-routes-runtime": "workspace:*",
     "next": "12.0.4",
     "react": "17.0.2",
     "react-dom": "17.0.2"
   },
   "devDependencies": {
-    "@ddadaal/next-typed-api-routes-cli": "file:../packages/cli",
+    "@ddadaal/next-typed-api-routes-cli": "workspace:*",
     "@next/bundle-analyzer": "^12.0.4",
     "@types/react": "17.0.35",
-    "eslint": "<8.0.0",
-    "eslint-config-next": "12.0.4",
-    "typescript": "4.5.2"
+    "@babel/core": ">=7.0.0 <8.0.0"
   }
 }
