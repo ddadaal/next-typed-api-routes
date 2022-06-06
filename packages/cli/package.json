@@ -30,9 +30,9 @@
     "url": "https://github.com/ddadaal/next-typed-api-routes/issues"
   },
   "dependencies": {
-    "ts-json-schema-generator": "^0.97.0",
+    "ts-json-schema-generator": "1.0.0",
     "tslib": "^2.3.1",
-    "typescript": "~4.4.3",
+    "typescript": "4.6.4",
     "yargs": "^17.2.1"
   },
   "devDependencies": {

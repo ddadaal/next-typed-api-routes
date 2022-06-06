@@ -139,5 +139,29 @@
       "title": "RegisterSchema"
     }
   },
-  "models": {}
+  "models": {
+    "LoginInfo": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string",
+          "description": "The username",
+          "format": "idn-email",
+          "maxLength": 20
+        },
+        "password": {
+          "type": "string",
+          "description": "The password",
+          "minLength": 8
+        }
+      },
+      "required": [
+        "username",
+        "password"
+      ],
+      "additionalProperties": false,
+      "$id": "LoginInfo",
+      "title": "LoginInfo"
+    }
+  }
 }

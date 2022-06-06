@@ -31,7 +31,7 @@ function changeRef(schema: object) {
 }
 
 export class IgnoreArrowFunctionParser implements SubNodeParser {
-  supportsNode(node): boolean {
+  supportsNode(node: ts.Node): boolean {
     return ts.isArrowFunction(node);
   }
   createType(): BaseType | undefined {

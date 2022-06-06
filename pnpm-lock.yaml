@@ -60,14 +60,14 @@ importers:
   packages/cli:
     specifiers:
       '@types/yargs': 17.0.10
-      ts-json-schema-generator: ^0.97.0
+      ts-json-schema-generator: 1.0.0
       tslib: ^2.3.1
-      typescript: ~4.4.3
+      typescript: 4.6.4
       yargs: ^17.2.1
     dependencies:
-      ts-json-schema-generator: 0.97.0
+      ts-json-schema-generator: 1.0.0
       tslib: 2.4.0
-      typescript: 4.4.4
+      typescript: 4.6.4
       yargs: 17.5.1
     devDependencies:
       '@types/yargs': 17.0.10
@@ -1294,9 +1294,9 @@ packages:
     engines: {node: '>= 6'}
     dev: true
 
-  /commander/8.3.0:
-    resolution: {integrity: sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==}
-    engines: {node: '>= 12'}
+  /commander/9.3.0:
+    resolution: {integrity: sha512-hv95iU5uXPbK83mjrJKuZyFM/LBAoCV/XhVGkS5Je6tl7sxr6A0ITMw5WoRV46/UaJ46Nllm3Xt7IaJhXTIkzw==}
+    engines: {node: ^12.20.0 || >=14}
     dev: false
 
   /commondir/1.0.1:
@@ -3961,17 +3961,17 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /ts-json-schema-generator/0.97.0:
-    resolution: {integrity: sha512-kPDq4ut8Mu1ZgSN7OeTXz+ueb1juFt2eyGd23lMr3WoN5sq4Xa9m22kDI46OlwapE0aF8e1pUesOFgDcATHcuA==}
+  /ts-json-schema-generator/1.0.0:
+    resolution: {integrity: sha512-F5VofsyMhNSXKII32NDS8/Ur8o2K3Sh5i/U2ke3UgCKf26ybgm2cZeT2x7VJPl1trML/9QLzz/82l0mvzmb3Vw==}
     engines: {node: '>=10.0.0'}
     hasBin: true
     dependencies:
       '@types/json-schema': 7.0.11
-      commander: 8.3.0
+      commander: 9.3.0
       glob: 7.2.3
       json5: 2.2.1
       safe-stable-stringify: 2.3.1
-      typescript: 4.4.4
+      typescript: 4.6.4
     dev: false
 
   /tsconfig-paths/3.14.1:
@@ -4049,8 +4049,8 @@ packages:
     resolution: {integrity: sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=}
     dev: true
 
-  /typescript/4.4.4:
-    resolution: {integrity: sha512-DqGhF5IKoBl8WNf8C1gu8q0xZSInh9j1kJJMqT3a94w1JzVaBU4EXOSMrz9yDqMT0xt3selp83fuFMQ0uzv6qA==}
+  /typescript/4.6.4:
+    resolution: {integrity: sha512-9ia/jWHIEbo49HfjrLGfKbZSuWo9iTMwXO+Ca3pRsSpbsMbc7/IU8NKdCZVRRBafVPGnoJeFL76ZOAA84I9fEg==}
     engines: {node: '>=4.2.0'}
     hasBin: true
     dev: false
