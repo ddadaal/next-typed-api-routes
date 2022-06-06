@@ -10,14 +10,14 @@
   },
   "dependencies": {
     "@ddadaal/next-typed-api-routes-runtime": "workspace:*",
-    "next": "12.0.4",
-    "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "next": "12.1.6",
+    "react": "18.1.0",
+    "react-dom": "18.1.0"
   },
   "devDependencies": {
     "@ddadaal/next-typed-api-routes-cli": "workspace:*",
     "@next/bundle-analyzer": "^12.0.4",
-    "@types/react": "17.0.35",
+    "@types/react": "18.0.12",
     "@babel/core": ">=7.0.0 <8.0.0"
   }
 }
