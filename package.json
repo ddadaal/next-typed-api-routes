@@ -3,7 +3,7 @@
   "version": "0.2.12",
   "description": "Make Next.js API Routes strongly typed with routes and clients type completion and auto-generated parameter validation",
   "scripts": {
-    "build": "pnpm -r run build"
+    "build": "pnpm --filter !example run build"
   },
   "homepage": "https://github.com/ddadaal/next-typed-api-routes#readme",
   "devDependencies": {
