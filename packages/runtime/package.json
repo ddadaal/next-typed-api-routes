@@ -31,7 +31,7 @@
     "ajv": "^8.8.1",
     "ajv-formats": "^2.1.1",
     "ajv-formats-draft2019": "^1.6.1",
-    "fast-json-stringify": "^2.7.12",
+    "fast-json-stringify": "4.0.0",
     "long": "^5.1.0",
     "tslib": "^2.3.1"
   },

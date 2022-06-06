@@ -80,7 +80,7 @@ importers:
       ajv: ^8.8.1
       ajv-formats: ^2.1.1
       ajv-formats-draft2019: ^1.6.1
-      fast-json-stringify: ^2.7.12
+      fast-json-stringify: 4.0.0
       long: ^5.1.0
       rollup: ^2.60.0
       rollup-plugin-terser: ^7.0.2
@@ -90,7 +90,7 @@ importers:
       ajv: 8.11.0
       ajv-formats: 2.1.1
       ajv-formats-draft2019: 1.6.1_ajv@8.11.0
-      fast-json-stringify: 2.7.13
+      fast-json-stringify: 4.0.0
       long: 5.2.0
       tslib: 2.4.0
     devDependencies:
@@ -1052,6 +1052,7 @@ packages:
       fast-json-stable-stringify: 2.1.0
       json-schema-traverse: 0.4.1
       uri-js: 4.4.1
+    dev: true
 
   /ajv/8.11.0:
     resolution: {integrity: sha512-wGgprdCvMalC0BztXvitD2hC04YffAvtsUn93JbGXYLAtCUO4xd17mCCZQxUOItiBwZvJScWo8NIvQMQ71rdpg==}
@@ -2033,13 +2034,16 @@ packages:
 
   /fast-json-stable-stringify/2.1.0:
     resolution: {integrity: sha512-lhd/wF+Lk98HZoTCtlVraHtfh5XYijIjalXck7saUtuanSDyLMxnHhSXEDJqHxD7msR8D0uCmqlkwjCV8xvwHw==}
+    dev: true
 
-  /fast-json-stringify/2.7.13:
-    resolution: {integrity: sha512-ar+hQ4+OIurUGjSJD1anvYSDcUflywhKjfxnsW4TBTD7+u0tJufv6DKRWoQk3vI6YBOWMoz0TQtfbe7dxbQmvA==}
+  /fast-json-stringify/4.0.0:
+    resolution: {integrity: sha512-zv2rRNdLXWr3ZZfpQuE3/QDVeyCOufFOaMTqTGO1r5WB2AJ+ISmbLY2id4W4KG3pcng+MsnBO3ROzh/mlx3uFA==}
     engines: {node: '>= 10.0.0'}
     dependencies:
-      ajv: 6.12.6
+      ajv: 8.11.0
+      ajv-formats: 2.1.1
       deepmerge: 4.2.2
+      fast-uri: 2.0.0
       rfdc: 1.3.0
       string-similarity: 4.0.4
     dev: false
@@ -2047,6 +2051,10 @@ packages:
   /fast-levenshtein/2.0.6:
     resolution: {integrity: sha512-DCXu6Ifhqcks7TZKY3Hxp3y6qphY5SJZmrWMDrKcERSOXWQdMhU9Ig/PYrzyw/ul9jOIyh0N4M0tbC5hodg8dw==}
     dev: true
+
+  /fast-uri/2.0.0:
+    resolution: {integrity: sha512-Mt/lDpFwcPcLv3G0Qd3WlIjP5AeCQo/X91TZ9G8Px/3GzkTADX5smwginXYz+iX8mSa5pBN98EObj05X39/JoA==}
+    dev: false
 
   /fastq/1.13.0:
     resolution: {integrity: sha512-YpkpUnK8od0o1hmeSc7UUs/eB/vIPWJYjKck2QKIzAf71Vm1AAQ3EbuZB3g2JIy+pg+ERD0vqI79KyZiB2e2Nw==}
@@ -2650,6 +2658,7 @@ packages:
 
   /json-schema-traverse/0.4.1:
     resolution: {integrity: sha512-xbbCH5dCYU5T8LcEhhuh7HJ88HXuW3qsI3Y0zOZFKfZEHcpWiHU/Jxzk629Brsab/mMiHQti9wMP+845RPe3Vg==}
+    dev: true
 
   /json-schema-traverse/1.0.0:
     resolution: {integrity: sha512-NM8/P9n3XjXhIZn1lLhkFaACTOURQXjWhV4BA/RnOv8xvgqtqpAX9IO4mRQxSx1Rlo4tqzeqb0sOlruaOy3dug==}
