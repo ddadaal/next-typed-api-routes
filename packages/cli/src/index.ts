@@ -1,8 +1,9 @@
 #!/usr/bin/env node
-import yargs from "yargs/yargs";
 import { hideBin } from "yargs/helpers";
-import { generateSchemasJson } from "./generateSchemas";
+import yargs from "yargs/yargs";
+
 import { generateClients } from "./generateClients";
+import { generateSchemasJson } from "./generateSchemas";
 
 yargs(hideBin(process.argv))
   .command("schema", "Generate schemas.json", (yargs) => {

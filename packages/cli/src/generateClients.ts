@@ -1,7 +1,8 @@
 import fs from "fs";
+import { EOL } from "os";
 import path from "path";
 import ts from "typescript";
-import { EOL } from "os";
+
 import { checkApiRoutesPath, createDir } from "./errors";
 
 const eslintMaxLen = "/* eslint-disable max-len */";
@@ -132,7 +133,7 @@ export async function generateClients({
 export const ${apiObjectName} = {
 ${endpoints.map((e) =>
     // eslint-disable-next-line max-len
-    `  ${e.schemaName}: fromApi<${e.interfaceName}>("${e.method}", join(process.env.NEXT_PUBLIC_BASE_PATH || "", "${e.url}")),`
+    `  ${e.schemaName}: fromApi<${e.interfaceName}>("${e.method}", join(process.env.NEXT_PUBLIC_BASE_PATH || "", "${e.url}")),`,
   ).join(EOL)}
 };
   `;

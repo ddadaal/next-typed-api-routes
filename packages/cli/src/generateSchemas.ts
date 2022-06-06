@@ -1,11 +1,12 @@
-import * as tsj from "ts-json-schema-generator";
 import * as fs from "fs";
-import ts from "typescript";
+import path from "path";
+import * as tsj from "ts-json-schema-generator";
 import {
   BaseType,
   createFormatter, createParser, SchemaGenerator, SubNodeParser,
 } from "ts-json-schema-generator";
-import path from "path";
+import ts from "typescript";
+
 import { checkApiRoutesPath } from "./errors";
 
 const fsp = fs.promises;
@@ -96,7 +97,7 @@ export async function generateSchemasJson({
   // write to src/apis/schemas.json file on the module dir
   await fsp.writeFile(
     SCHEMAS_JSON_PATH,
-    stringify({ routes: routeSchemas, models: models })
+    stringify({ routes: routeSchemas, models: models }),
   );
 
 }

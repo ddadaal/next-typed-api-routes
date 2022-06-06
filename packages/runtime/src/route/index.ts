@@ -1,8 +1,9 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import type { Schema } from "../types/schema";
 import type { ErrorObject } from "ajv";
-import { createValidatorsFromSchema } from "./schemas";
 import fs from "fs";
+import type { NextApiRequest, NextApiResponse } from "next";
+
+import type { Schema } from "../types/schema";
+import { createValidatorsFromSchema } from "./schemas";
 
 // Hardcoded schemas.json path
 const schemas = JSON.parse(fs.readFileSync("./api-routes-schemas.json", "utf8"));

@@ -1,7 +1,7 @@
 import Ajv, { SchemaObject, ValidateFunction } from "ajv";
-import fastJson from "fast-json-stringify";
-import addDraft2019Format from "ajv-formats-draft2019";
 import addFormats from "ajv-formats";
+import addDraft2019Format from "ajv-formats-draft2019";
+import fastJson from "fast-json-stringify";
 
 type Serializer = (doc: string) => any;
 

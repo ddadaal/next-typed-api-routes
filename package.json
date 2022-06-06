@@ -8,16 +8,20 @@
   "homepage": "https://github.com/ddadaal/next-typed-api-routes#readme",
   "devDependencies": {
     "@changesets/cli": "2.22.0",
-    "@types/eslint": "^8.2.0",
+    "@types/eslint": "8.4.2",
     "@types/jest": "27.0.2",
     "@types/node": "^16.11.7",
-    "@typescript-eslint/eslint-plugin": "5.4.0",
-    "@typescript-eslint/parser": "5.4.0",
-    "eslint": "^8.2.0",
-    "eslint-plugin-react": "7.27.0",
+    "@typescript-eslint/eslint-plugin": "5.27.0",
+    "@typescript-eslint/parser": "5.27.0",
+    "eslint": "8.17.0",
+    "@ddadaal/eslint-config": "1.5.0",
+    "eslint-plugin-react": "7.30.0",
     "rimraf": "^3.0.2",
     "standard-version": "^9.3.2",
-    "typescript": "4.7.3"
+    "typescript": "4.7.3",
+    "eslint-plugin-import": "2.26.0",
+    "eslint-plugin-simple-import-sort": "7.0.0",
+    "eslint-import-resolver-typescript": "2.7.1"
   },
   "workspaces": [
     "packages/**"

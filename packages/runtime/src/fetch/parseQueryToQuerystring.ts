@@ -7,7 +7,7 @@ export function parseQueryToQuerystring(query: Querystring) {
     if (typeof val !== "undefined") {
       const key = encodeURIComponent(k) + "=";
       if (Array.isArray(val)) {
-        for (const v of val){
+        for (const v of val) {
           url += key + encodeURIComponent(v);
           url += "&";
         }
@@ -18,7 +18,7 @@ export function parseQueryToQuerystring(query: Querystring) {
     }
   }
   if (url.endsWith("&")) {
-    url = url.substr(0, url.length -1);
+    url = url.substr(0, url.length - 1);
   }
   return url;
 }

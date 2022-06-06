@@ -1,12 +1,12 @@
-import type { GeneralSchema, SuccessResponse } from "../types/schema";
 import type {
   Querystring, RequestArgs,
 } from "../types/request";
-import { removeNullOrUndefinedKey } from "./utils";
+import type { GeneralSchema, SuccessResponse } from "../types/schema";
 import { failEvent, finallyEvent, prefetchEvent, successEvent } from "./events";
+import { FETCH_ERROR, HttpError, TYPE_ERROR } from "./HttpError";
 import { parseQueryToQuerystring } from "./parseQueryToQuerystring";
 import { replacePathArgs } from "./replacePathArgs";
-import { TYPE_ERROR, HttpError, FETCH_ERROR } from "./HttpError";
+import { removeNullOrUndefinedKey } from "./utils";
 
 function isServer() {
   return typeof window === "undefined";
@@ -89,8 +89,8 @@ implements PromiseLike<SuccessResponse<T>> {
     this.httpErrorHandler = new Map();
   }
 
-  then<TSuc = SuccessResponse<T> , TRej = never>(
-    onfulfilled?: ((value: SuccessResponse<T> ) => TSuc | PromiseLike<TSuc>) | null,
+  then<TSuc = SuccessResponse<T>, TRej = never>(
+    onfulfilled?: ((value: SuccessResponse<T>) => TSuc | PromiseLike<TSuc>) | null,
     onrejected?: ((reason: any) => TRej | PromiseLike<TRej>) | null,
   ): Promise<TSuc | TRej> {
     return this.promise
@@ -160,7 +160,7 @@ implements PromiseLike<SuccessResponse<T>> {
    * @returns A Promise
    */
   httpError<Code extends number>(
-    code: Code, handler: (err: T["responses"][Code]) => any
+    code: Code, handler: (err: T["responses"][Code]) => any,
   ): JsonFetchResultPromiseLike<T> {
     this.httpErrorHandler.set(code, handler);
     return this as any;
@@ -214,7 +214,7 @@ export function jsonFetch<T extends GeneralSchema>(
 export type JsonFetch = typeof jsonFetch;
 
 export function fromApi<TSchema extends GeneralSchema>(method: HttpMethod, url: string) {
-  return function (
+  return function(
     args: RequestArgs<TSchema>,
     signal?: AbortSignal,
   ): JsonFetchResultPromiseLike<TSchema>  {
