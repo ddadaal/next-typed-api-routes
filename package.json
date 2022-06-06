@@ -7,6 +7,7 @@
   },
   "homepage": "https://github.com/ddadaal/next-typed-api-routes#readme",
   "devDependencies": {
+    "@changesets/cli": "2.22.0",
     "@types/eslint": "^8.2.0",
     "@types/jest": "27.0.2",
     "@types/node": "^16.11.7",
