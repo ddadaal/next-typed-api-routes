@@ -23,8 +23,5 @@
     "eslint-plugin-simple-import-sort": "7.0.0",
     "eslint-import-resolver-typescript": "2.7.1"
   },
-  "workspaces": [
-    "packages/**"
-  ],
   "packageManager": "pnpm@7.1.9"
 }
