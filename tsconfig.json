@@ -6,7 +6,6 @@
     "moduleResolution": "node",
     "noImplicitReturns": true,
     "noImplicitThis": true,
-    "noUnusedLocals": true,
     "strictNullChecks": true,
     "esModuleInterop": true,
     "downlevelIteration": true,

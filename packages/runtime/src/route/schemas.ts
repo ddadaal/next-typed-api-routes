@@ -1,4 +1,4 @@
-import Ajv, { SchemaObject, ValidateFunction } from "ajv";
+import Ajv, { Options, SchemaObject, ValidateFunction } from "ajv";
 import addFormats from "ajv-formats";
 import addDraft2019Format from "ajv-formats-draft2019";
 import fastJson from "fast-json-stringify";
@@ -18,8 +18,10 @@ interface SchemaFileContent {
 
 export function createValidatorsFromSchema(schemas: SchemaFileContent) {
 
+  const ajvOptions: Options = { allowUnionTypes: true, coerceTypes: "array"  };
+
   // add shared models
-  const ajv = new Ajv({ allowUnionTypes: true, coerceTypes: "array" });
+  const ajv = new Ajv(ajvOptions);
 
   // add formats support
   addFormats(ajv);
@@ -37,12 +39,18 @@ export function createValidatorsFromSchema(schemas: SchemaFileContent) {
     const query = schema.properties.query && ajv.compile(schema.properties.query);
     const body = schema.properties.body && ajv.compile(schema.properties.body);
 
+
     const responseSerializers = schema.properties.responses && ((responses) => {
       const serializers = new Map<string, Serializer>();
 
       for (const [code, schema] of Object.entries(responses)) {
-        serializers.set(code,
-          fastJson(schema as any, { schema: schemas.models as any }));
+        // Sometimes fastJson just fails. Just ignores it for now.
+        try {
+          const serializer = fastJson(schema as any, { schema: schemas.models as any, ajv: ajvOptions });
+          serializers.set(code, serializer);
+        } catch (e) {
+          console.warn(`Failed to build ${name}'s ${code} response serializer. Ignored.`);
+        }
       }
       return serializers;
     })(schema.properties.responses.properties);

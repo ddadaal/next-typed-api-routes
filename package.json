@@ -22,7 +22,10 @@
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-simple-import-sort": "7.0.0",
     "eslint-import-resolver-typescript": "2.7.1",
-    "@changesets/changelog-git": "0.1.11"
+    "@changesets/changelog-git": "0.1.11",
+    "jest": "28.1.0",
+    "ts-jest": "28.0.4",
+    "jest-extended": "2.0.0"
   },
   "packageManager": "pnpm@7.1.9"
 }
