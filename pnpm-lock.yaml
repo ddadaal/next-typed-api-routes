@@ -4,6 +4,7 @@ importers:
 
   .:
     specifiers:
+      '@changesets/changelog-git': 0.1.11
       '@changesets/cli': 2.22.0
       '@ddadaal/eslint-config': 1.5.0
       '@types/eslint': 8.4.2
@@ -20,6 +21,7 @@ importers:
       standard-version: ^9.3.2
       typescript: 4.7.3
     devDependencies:
+      '@changesets/changelog-git': 0.1.11
       '@changesets/cli': 2.22.0
       '@ddadaal/eslint-config': 1.5.0_tyzj345i4ckhnteid5jx5bplcu
       '@types/eslint': 8.4.2
