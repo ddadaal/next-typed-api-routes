@@ -12,7 +12,7 @@ export default defineConfig([
       format: "cjs",
     },
     plugins: [ts({
-      tsconfig: "./tsconfig.json",
+      tsconfig: "./tsconfig.build.json",
     }), terser()],
   },
   {
@@ -22,7 +22,7 @@ export default defineConfig([
       format: "cjs",
     },
     plugins: [ts({
-      tsconfig: "./tsconfig.json",
+      tsconfig: "./tsconfig.build.json",
       // built by client
       declaration: false,
     }), commonjs(), json(), terser()],
