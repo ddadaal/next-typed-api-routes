@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.5.0
+
+### Minor Changes
+
+- 68b7842: ignore serializer building error and add tests
+
 ## 0.4.0
 
 ### Minor Changes
