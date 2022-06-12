@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.5.2
+
+### Patch Changes
+
+- Update deps
+
 ## 0.5.1
 
 ### Patch Changes
