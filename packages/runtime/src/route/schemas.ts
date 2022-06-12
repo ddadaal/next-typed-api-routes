@@ -39,18 +39,17 @@ export function createValidatorsFromSchema(schemas: SchemaFileContent) {
     const query = schema.properties.query && ajv.compile(schema.properties.query);
     const body = schema.properties.body && ajv.compile(schema.properties.body);
 
-
     const responseSerializers = schema.properties.responses && ((responses) => {
       const serializers = new Map<string, Serializer>();
 
       for (const [code, schema] of Object.entries(responses)) {
-        // Sometimes fastJson just fails. Just ignores it for now.
-        try {
-          const serializer = fastJson(schema as any, { schema: schemas.models as any, ajv: ajvOptions });
-          serializers.set(code, serializer);
-        } catch (e) {
-          console.warn(`Failed to build ${name}'s ${code} response serializer. Ignored.`);
-        }
+        // deep clone the models
+        // might be related to https://github.com/fastify/fast-json-stringify/issues/242
+        // if not clone, some strange errors occur
+        // the schemas are JSON data only, so stringify and parse works
+        const models = JSON.parse(JSON.stringify(schemas.models));
+        const serializer = fastJson(schema as any, { schema: models as any, ajv: ajvOptions });
+        serializers.set(code, serializer);
       }
       return serializers;
     })(schema.properties.responses.properties);
