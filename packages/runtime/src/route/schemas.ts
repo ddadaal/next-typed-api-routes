@@ -18,7 +18,7 @@ interface SchemaFileContent {
 
 export function createValidatorsFromSchema(schemas: SchemaFileContent) {
 
-  const ajvOptions: Options = { allowUnionTypes: true, coerceTypes: "array"  };
+  const ajvOptions: Options = { useDefaults: true, allowUnionTypes: true, coerceTypes: "array"  };
 
   // add shared models
   const ajv = new Ajv(ajvOptions);
