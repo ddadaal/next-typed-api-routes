@@ -27,6 +27,8 @@ yargs(hideBin(process.argv))
         default: "@ddadaal/next-typed-api-routes-runtime/lib/client",
       },
       apiObjectName: { type: "string", default: "api" },
+      basePathVar: { type: "string", default: "process.env.NEXT_PUBLIC_BASE_PATH || \"\"" },
+      extraImports: { type: "array", default: []},
     });
   }, (argv) => {
     generateClients(argv);

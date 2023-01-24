@@ -107,6 +107,8 @@ export interface GenerateApiClientsArgs {
   apiRoutesPath?: string;
   fetchImport?: string;
   apiObjectName?: string;
+  basePathVar?: string;
+  extraImports?: string[],
 }
 
 export async function generateClients({
@@ -114,6 +116,8 @@ export async function generateClients({
   apiRoutesPath = "src/pages/api",
   fetchImport = "@ddadaal/next-typed-api-routes-runtime/lib/client",
   apiObjectName = "api",
+  basePathVar = "process.env.NEXT_PUBLIC_BASE_PATH || \"\"",
+  extraImports = [],
 }: GenerateApiClientsArgs) {
 
   if (!apiRoutesPath.endsWith("/")) {
@@ -128,12 +132,14 @@ export async function generateClients({
 
   await getApiObject(apiRoutesPath, "", endpoints, imports);
 
+  const basePathVarDeclaration = `const basePath = ${basePathVar};`;
+
   // use string instead of ts factories to easily style the code and reduce complexity
   const apiObjDeclaration = `
 export const ${apiObjectName} = {
 ${endpoints.map((e) =>
     // eslint-disable-next-line max-len
-    `  ${e.schemaName}: fromApi<${e.interfaceName}>("${e.method}", join(process.env.NEXT_PUBLIC_BASE_PATH || "", "${e.url}")),`,
+    `  ${e.schemaName}: fromApi<${e.interfaceName}>("${e.method}", join(basePath, "${e.url}")),`,
   ).join(EOL)}
 };
   `;
@@ -152,6 +158,10 @@ import { join } from "path";
     fetchApiImportDeclaration +
     EOL + EOL +
     importDeclarations +
+    EOL + EOL
+    extraImports.join(EOL) +
+    EOL + EOL +
+    basePathVarDeclaration +
     EOL + EOL +
     apiObjDeclaration;
 

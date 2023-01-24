@@ -159,6 +159,26 @@ module.exports = {
 }
 ```
 
+You can also use `--basePathVar` option of `ntar` cli to customize the value of base path. 
+
+For example, when running `npx ntar client --basePathVar publicConfig.BASE_PATH`, the client file will look like:
+
+```tsx
+import { fromApi } from "@ddadaal/next-typed-api-routes-runtime/lib/client";
+import { join } from "path";
+
+import type { LoginSchema } from "src/pages/api/login/[username]";
+
+// the value of basePath is the same as the basePathVar option
+const basePath = publicConfig.BASE_PATH; 
+
+export const api = {
+  login: fromApi<LoginSchema>("GET", join(basePath, "/api/login/[username]")),
+};
+```
+
+If your `basePath` declaration needs imports, you can also use `extraImports` cli option to add extra imports into the client file. Multiple `extraImports` options can be specified.
+
 # Tips
 
 - All schemas and used models must have globally unique name
