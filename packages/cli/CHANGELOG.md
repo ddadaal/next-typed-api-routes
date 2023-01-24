@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.6.0
+
+### Minor Changes
+
+- ce3bdfd: add option to customize basepath and extra imports
+
 ## 0.5.1
 
 ### Patch Changes
