@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.6.1
+
+### Patch Changes
+
+- ce9f784: fix api client generation
+
 ## 0.6.0
 
 ### Minor Changes
