@@ -158,7 +158,7 @@ import { join } from "path";
     fetchApiImportDeclaration +
     EOL + EOL +
     importDeclarations +
-    EOL + EOL
+    EOL + EOL +
     extraImports.join(EOL) +
     EOL + EOL +
     basePathVarDeclaration +
