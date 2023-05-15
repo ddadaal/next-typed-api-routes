@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.6.2
+
+### Patch Changes
+
+- 43aa7e4: update typescript to the latest supported by tsj
+
 ## 0.6.1
 
 ### Patch Changes
