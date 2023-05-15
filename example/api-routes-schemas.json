@@ -162,6 +162,10 @@
       "additionalProperties": false,
       "$id": "LoginInfo",
       "title": "LoginInfo"
+    },
+    "def-any": {
+      "$id": "def-any",
+      "title": "def-any"
     }
   }
 }

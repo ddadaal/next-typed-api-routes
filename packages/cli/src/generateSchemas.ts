@@ -34,8 +34,8 @@ export class IgnoreArrowFunctionParser implements SubNodeParser {
   supportsNode(node: ts.Node): boolean {
     return ts.isArrowFunction(node);
   }
-  createType(): BaseType | undefined {
-    return undefined;
+  createType(): BaseType {
+    return new tsj.AnyType();
   }
 }
 
