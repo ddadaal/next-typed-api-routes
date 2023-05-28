@@ -10,6 +10,8 @@ yargs(hideBin(process.argv))
     return yargs.options({
       apiRoutesPath: { type: "string", default: "src/pages/api" },
       tsconfigPath: { type: "string", default: "./tsconfig.json" },
+      throwWhenError: { type: "boolean", default: false },
+      verbose: { type: "boolean", default: false },
     });
   }, (argv) => {
     generateSchemasJson(argv);

@@ -22,6 +22,10 @@ function reportError(
 
 type OrPromise<T> = T | Promise<T>;
 
+export type RouteConfig = {
+  ignoreIfSchemaNotFound?: boolean;
+}
+
 export function route<S extends Schema<any, any, any>>(
   schemaName: string,
   handler: (
@@ -31,11 +35,15 @@ export function route<S extends Schema<any, any, any>>(
     },
     res: NextApiResponse<ValueOf<S["responses"]>>
   ) => OrPromise<Partial<S["responses"]> | void>,
+  config?: RouteConfig
 ): typeof handler {
 
   const validator = validators.get(schemaName);
 
   if (!validator) {
+    if (config?.ignoreIfSchemaNotFound) {
+      return handler;
+    } 
     throw new RangeError(`schemaName ${schemaName} is not valid.`);
   }
 

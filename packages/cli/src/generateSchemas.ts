@@ -8,6 +8,7 @@ import {
 import ts from "typescript";
 
 import { checkApiRoutesPath } from "./errors";
+import { listEndpoints } from "./generateClients";
 
 const fsp = fs.promises;
 
@@ -49,6 +50,8 @@ function addIdAndTitle(obj: object) {
 interface GenerateSchemaArgs {
   apiRoutesPath?: string;
   tsconfigPath?: string;
+  throwWhenError?: boolean;
+  verbose?: boolean;
 }
 
 const SCHEMAS_JSON_PATH = path.resolve("api-routes-schemas.json");
@@ -56,36 +59,75 @@ const SCHEMAS_JSON_PATH = path.resolve("api-routes-schemas.json");
 export async function generateSchemasJson({
   apiRoutesPath = "src/pages/api",
   tsconfigPath = "./tsconfig.json",
+  throwWhenError = false,
+  verbose = false,
 }: GenerateSchemaArgs) {
 
   // check if apiRoutesPath exists
   await checkApiRoutesPath(apiRoutesPath);
 
-  const config: tsj.Config = {
-    path: path.join(apiRoutesPath, "**/**.ts"),
-    jsDoc: "extended", expose: "all",
-    tsconfig: tsconfigPath,
-  };
+  // list all endpoints
+  const { endpoints } = await listEndpoints(apiRoutesPath);
 
-  const program = tsj.createProgram(config);
-  const parser = createParser(program, config, (prs) => {
-    prs.addNodeParser(new IgnoreArrowFunctionParser());
-  });
-  const formatter = createFormatter(config);
-  const generator = new SchemaGenerator(program, parser, formatter, config);
+  // for all endpoints, generate models
 
-  const allDefinitions = generator.createSchema()
-    .definitions;
+  type SchemaMap = NonNullable<tsj.Schema["definitions"]>;
 
-  const routeSchemas: typeof allDefinitions = {};
-  const models: typeof allDefinitions = {};
-  for (const key in allDefinitions) {
-    if (key === "File" || key === "Blob") { continue; }
-    const safeKey = encodeURIComponent(key);
-    if (key.endsWith("Schema")) {
-      routeSchemas[safeKey] = allDefinitions[key];
-    } else {
-      models[safeKey] = allDefinitions[key];
+  const models = {} as SchemaMap;
+  const routeSchemas = {} as SchemaMap;
+
+
+  const verboseLog: typeof console.log = (...args) =>  {
+    if (verbose) {
+      console.log(...args);
+    }
+  }
+
+  for (const endpoint of endpoints) {
+    const config: tsj.Config = {
+      jsDoc: "extended",
+      expose: "all",
+      type: endpoint.schemaName,
+      tsconfig: tsconfigPath,
+      skipTypeCheck: true,
+      sortProps: true,
+    };
+
+    verboseLog("Generating schema %o", endpoint);
+
+    try {
+      const program = tsj.createProgram(config);
+      const parser = createParser(program, config, (prs) => {
+        prs.addNodeParser(new IgnoreArrowFunctionParser());
+      });
+      const formatter = createFormatter(config);
+      const generator = new SchemaGenerator(program, parser, formatter, config);
+
+      const allDefinitions = generator.createSchema()
+        .definitions;
+
+      verboseLog("Definitions: %o", allDefinitions);
+
+      for (const key in allDefinitions) {
+        if (key === "File" || key === "Blob") { continue; }
+        const safeKey = encodeURIComponent(key);
+        if (key.endsWith("Schema")) {
+          if (routeSchemas[safeKey]) {
+            console.warn("Duplicate schema name: " + key);
+          }
+          routeSchemas[safeKey] = allDefinitions[key];
+        } else {
+          if (models[safeKey]) {
+            console.warn("Duplicate model name: " + key);
+          }
+          models[safeKey] = allDefinitions[key];
+        }
+      }
+    } catch(e) {
+      console.error(`Error when generating schema for ${endpoint.filePath}.`, e);
+      if (throwWhenError) {
+        throw e;
+      }
     }
   }
 
@@ -99,6 +141,5 @@ export async function generateSchemasJson({
     SCHEMAS_JSON_PATH,
     stringify({ routes: routeSchemas, models: models }),
   );
-
 }
 

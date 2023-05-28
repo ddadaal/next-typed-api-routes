@@ -25,7 +25,8 @@ interface Endpoint {
   schemaName: string;
   interfaceName: string;
   method: string;
-  url: string;
+  path: string;
+  filePath: string;
 }
 
 async function getApiObject(
@@ -35,9 +36,9 @@ async function getApiObject(
 ) {
 
   for (const f of await fs.promises.readdir(rootDir)) {
-    const p = path.join(rootDir, f);
+    const filePath = path.join(rootDir, f);
 
-    const stat = await fs.promises.stat(p);
+    const stat = await fs.promises.stat(filePath);
 
     const [filename, ext] = getFileNameInfo(f);
 
@@ -45,8 +46,8 @@ async function getApiObject(
       if (ext === "ts") {
         // read the file and get the schema name
         const sourceFile = ts.createSourceFile(
-          p,
-          await fs.promises.readFile(p, "utf8"),
+          filePath,
+          await fs.promises.readFile(filePath, "utf8"),
           ts.ScriptTarget.Latest,
         );
 
@@ -87,17 +88,18 @@ async function getApiObject(
 
         // LoginSchema -> login
         const schemaName = interfaceName[0].toLocaleLowerCase()
-        + interfaceName.substr(1, interfaceName.length - "Schema".length - 1);
+        + interfaceName.substring(1, interfaceName.length - "Schema".length);
 
         endpoints.push({
           method: methodName,
           schemaName,
           interfaceName,
-          url: "/api/" + relativePath + (filename === "index" ? "" : ("/" + filename)),
+          path: "/api/" + relativePath + (filename === "index" ? "" : ("/" + filename)),
+          filePath,
         });
       }
     } else {
-      await getApiObject(p, path.join(relativePath, f), endpoints, imports);
+      await getApiObject(filePath, path.join(relativePath, f), endpoints, imports);
     }
   }
 }
@@ -111,6 +113,24 @@ export interface GenerateApiClientsArgs {
   extraImports?: string[],
 }
 
+export async function listEndpoints(
+  apiRoutesPath: string,
+) {
+
+  if (!apiRoutesPath.endsWith("/")) {
+    apiRoutesPath += "/";
+  }
+
+  await checkApiRoutesPath(apiRoutesPath);
+
+  const imports = [] as Import[];
+  const endpoints = [] as Endpoint[];
+
+  await getApiObject(apiRoutesPath, "", endpoints, imports);
+
+  return { imports, endpoints };
+}
+
 export async function generateClients({
   apiFilePath = "src/apis/api.ts",
   apiRoutesPath = "src/pages/api",
@@ -120,17 +140,9 @@ export async function generateClients({
   extraImports = [],
 }: GenerateApiClientsArgs) {
 
-  if (!apiRoutesPath.endsWith("/")) {
-    apiRoutesPath += "/";
-  }
+  const { endpoints, imports  } = await listEndpoints(apiRoutesPath);
 
-  await checkApiRoutesPath(apiRoutesPath);
   await createDir(apiFilePath);
-
-  const imports = [] as Import[];
-  const endpoints = [] as Endpoint[];
-
-  await getApiObject(apiRoutesPath, "", endpoints, imports);
 
   const basePathVarDeclaration = `const basePath = ${basePathVar};`;
 
@@ -139,7 +151,7 @@ export async function generateClients({
 export const ${apiObjectName} = {
 ${endpoints.map((e) =>
     // eslint-disable-next-line max-len
-    `  ${e.schemaName}: fromApi<${e.interfaceName}>("${e.method}", join(basePath, "${e.url}")),`,
+    `  ${e.schemaName}: fromApi<${e.interfaceName}>("${e.method}", join(basePath, "${e.path}")),`,
   ).join(EOL)}
 };
   `;
