@@ -1,5 +1,15 @@
 # Change Log
 
+## 0.7.0
+
+### Minor Changes
+
+- 99402aa: Support route definition through zod
+
+### Patch Changes
+
+- 4efe378: update dependencies
+
 ## 0.6.2
 
 ### Patch Changes
