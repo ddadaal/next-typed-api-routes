@@ -24,7 +24,7 @@ interface Import {
 export const ApiTypes = {
   zod: { libImport: "fromZodRoute", typeFormat: (typeName: string) => `typeof ${typeName}` },
   typebox: { libImport: "fromTypeboxRoute", typeFormat: (typeName: string) => `typeof ${typeName}` },
-  ajv: { libImport: "fromApi", typeFormat: (typeName: string) => typeName },
+  static: { libImport: "fromStaticRoute", typeFormat: (typeName: string) => typeName },
 };
 
 export type ApiType = keyof typeof ApiTypes;
@@ -117,7 +117,7 @@ async function getApiObject(
                 found = {
                   typeName: interfaceName,
                   method: s.type.literal.text,
-                  apiType: "ajv",
+                  apiType: "static",
                 };
 
                 break;

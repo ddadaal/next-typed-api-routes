@@ -8,7 +8,7 @@ import { ajvOptions, createAjv } from "./ajv";
 import { OrPromise, returnError, Serializer, ValueOf } from "./utils";
 
 
-export interface Validator {
+export interface StaticValidator {
   query?: ValidateFunction;
   body?: ValidateFunction;
   responseSerializers?: Map<string, Serializer>;
@@ -19,7 +19,7 @@ interface SchemaFileContent {
   routes: Record<string, SchemaObject>;
 }
 
-export function createValidatorsFromSchema(schemas: SchemaFileContent) {
+export function createValidatorsFromStaticSchema(schemas: SchemaFileContent) {
 
   const ajv = createAjv();
 
@@ -29,7 +29,7 @@ export function createValidatorsFromSchema(schemas: SchemaFileContent) {
   }
 
   // compile validatiors
-  const routeValiators = new Map<string, Validator>();
+  const routeValiators = new Map<string, StaticValidator>();
 
   for (const [name, schema] of Object.entries(schemas.routes)) {
     const query = schema.properties.query && ajv.compile(schema.properties.query);
@@ -58,11 +58,11 @@ export function createValidatorsFromSchema(schemas: SchemaFileContent) {
 }
 
 
-let validators: Map<string, Validator>;
+let validators: Map<string, StaticValidator>;
 
 
 
-export function route<S extends AnySchema>(
+export function staticRoute<S extends AnySchema>(
   schemaName: string,
   handler: (
     req: Omit<NextApiRequest, "body"> & {
@@ -75,7 +75,7 @@ export function route<S extends AnySchema>(
 
   if (!validators) {
     const schemas = JSON.parse(fs.readFileSync("./api-routes-schemas.json", "utf8"));
-    validators = createValidatorsFromSchema(schemas);
+    validators = createValidatorsFromStaticSchema(schemas);
   }
 
   const validator = validators.get(schemaName);

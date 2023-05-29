@@ -1,5 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { route } from "@ddadaal/next-typed-api-routes-runtime";
+import { staticRoute } from "@ddadaal/next-typed-api-routes-runtime";
 
 export interface RegisterSchema {
   method: "POST";
@@ -19,7 +19,7 @@ export interface RegisterSchema {
 
 }
 
-export default route<RegisterSchema>("RegisterSchema", (req) => {
+export default staticRoute<RegisterSchema>("RegisterSchema", (req) => {
   const { password, username } = req.body;
 
   return { 200: { token: username + password } };

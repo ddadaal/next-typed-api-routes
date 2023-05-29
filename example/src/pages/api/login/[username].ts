@@ -1,5 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { route } from "@ddadaal/next-typed-api-routes-runtime";
+import { staticRoute } from "@ddadaal/next-typed-api-routes-runtime";
 
 /** You can use types anywhere. Recommend to use import type */
 import type { LoginInfo } from "../../../models/LoginInfo";
@@ -19,7 +19,7 @@ export interface LoginSchema {
 
 }
 
-export default route<LoginSchema>("LoginSchema", (req) => {
+export default staticRoute<LoginSchema>("LoginSchema", (req) => {
   const { password, username } = req.query;
 
   if (username === password) {

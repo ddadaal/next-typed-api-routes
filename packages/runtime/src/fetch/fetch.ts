@@ -219,7 +219,7 @@ export function jsonFetch<T extends AnySchema>(
 
 export type JsonFetch = typeof jsonFetch;
 
-export function fromApi<TSchema extends AnySchema>(method: HttpMethod, url: string) {
+export function fromStaticRoute<TSchema extends AnySchema>(method: HttpMethod, url: string) {
   return function(
     args: RequestArgs<TSchema>,
     signal?: AbortSignal,
@@ -241,10 +241,10 @@ export function fromApi<TSchema extends AnySchema>(method: HttpMethod, url: stri
 }
 
 export function fromZodRoute<TSchema extends ZodRouteSchema>(method: HttpMethod, url: string) {
-  return fromApi<ZodRouteSchemaToSchema<TSchema>>(method, url);
+  return fromStaticRoute<ZodRouteSchemaToSchema<TSchema>>(method, url);
 }
 
 export function fromTypeboxRoute<TSchema extends TypeboxRouteSchema>(method: HttpMethod, url: string) {
-  return fromApi<TypeboxRouteSchemaToSchema<TSchema>>(method, url);
+  return fromStaticRoute<TypeboxRouteSchemaToSchema<TSchema>>(method, url);
 }
 

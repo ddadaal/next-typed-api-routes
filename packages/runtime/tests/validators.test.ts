@@ -1,6 +1,6 @@
-import { createValidatorsFromSchema } from "../src/route/ajvRoute";
+import { createValidatorsFromStaticSchema } from "../src/route/staticRoute";
 import schemas from "./schemas.json";
 
 it("should correctly generate schemas", () => {
-  createValidatorsFromSchema(schemas);
+  createValidatorsFromStaticSchema(schemas);
 });
