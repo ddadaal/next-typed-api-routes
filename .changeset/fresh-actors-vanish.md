@@ -1,5 +1,4 @@
 ---
-"example": minor
 "@ddadaal/next-typed-api-routes-cli": minor
 "@ddadaal/next-typed-api-routes-runtime": minor
 ---
