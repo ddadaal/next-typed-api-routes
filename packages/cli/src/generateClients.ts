@@ -21,9 +21,12 @@ interface Import {
   relativePath: string;
 }
 
+export type ApiType = "zod" | "ajv";
+
 interface Endpoint {
-  schemaName: string;
-  interfaceName: string;
+  functionName: string;
+  importName: string;
+  type: ApiType;
   method: string;
   url: string;
 }
@@ -50,49 +53,86 @@ async function getApiObject(
           ts.ScriptTarget.Latest,
         );
 
-        // find the interface with name ending with "Schema"
-        const interfaceStatement = sourceFile.statements.find((x) =>
-          ts.isInterfaceDeclaration(x)
-          && x.name.text.endsWith("Schema") && x.name.text.length > "Schema".length);
+        let found: { typeName: string; method: string; apiType: ApiType } | undefined = undefined;
 
-        if (!interfaceStatement) {
-          continue;
-        }
+        for (const statement of sourceFile.statements) {
 
-        const interfaceDeclaration = interfaceStatement as ts.InterfaceDeclaration;
+          // if there is a object that ends with Schema, consider it as a zod schema
+          if (ts.isVariableStatement(statement)) {
+            const declaration = statement.declarationList.declarations[0];
 
-        const interfaceName = interfaceDeclaration.name.text;
+            if (ts.isIdentifier(declaration.name)
+              && declaration.name.text.endsWith("Schema") && declaration.name.text.length > "Schema".length
+              && declaration.initializer && ts.isCallExpression(declaration.initializer)
+                && ts.isObjectLiteralExpression(declaration.initializer.arguments[0])
+            ) {
+              const schema = declaration.initializer.arguments[0];
 
-        // Get method from method property
-        let methodName: string | undefined = undefined;
-        for (const s of interfaceDeclaration.members) {
-          if (ts.isPropertySignature(s) &&
-              ts.isIdentifier(s.name) && s.name.text === "method" &&
-              s.type && ts.isLiteralTypeNode(s.type) && ts.isStringLiteral(s.type.literal)
-          ) {
-            methodName = s.type.literal.text;
+              for (const property of schema.properties) {
+
+                if (ts.isPropertyAssignment(property) &&
+                  property.name && ts.isIdentifier(property.name)
+                  && property.name.escapedText === "method"
+                  && ts.isStringLiteral(property.initializer)
+                ) {
+                  found = {
+                    apiType: "zod",
+                    typeName: declaration.name.text,
+                    method: property.initializer.text,
+                  };
+
+                  break;
+                }
+              }
+            }
+          }
+
+          if (found) {
             break;
+          }
+
+
+          if (ts.isInterfaceDeclaration(statement)
+              && statement.name.text.endsWith("Schema") && statement.name.text.length > "Schema".length) {
+
+            const interfaceName = statement.name.text;
+
+            // Get method from method property
+            for (const s of statement.members) {
+              if (ts.isPropertySignature(s) &&
+                    ts.isIdentifier(s.name) && s.name.text === "method" &&
+                    s.type && ts.isLiteralTypeNode(s.type) && ts.isStringLiteral(s.type.literal)
+              ) {
+
+                found = {
+                  typeName: interfaceName,
+                  method: s.type.literal.text,
+                  apiType: "ajv",
+                };
+
+                break;
+              }
+            }
+
           }
         }
 
-        if (!methodName) {
-          continue;
-        }
-
+        if (!found) { continue; }
         // Get URL from file path
         imports.push({
-          interfaceName,
+          interfaceName: found.typeName,
           relativePath: relativePath + "/" + filename,
         });
 
         // LoginSchema -> login
-        const schemaName = interfaceName[0].toLocaleLowerCase()
-        + interfaceName.substr(1, interfaceName.length - "Schema".length - 1);
+        const functionName = found.typeName[0].toLocaleLowerCase()
+        + found.typeName.substring(1, found.typeName.length - "Schema".length);
 
         endpoints.push({
-          method: methodName,
-          schemaName,
-          interfaceName,
+          method: found.method,
+          importName: found.typeName,
+          functionName,
+          type: found.apiType,
           url: "/api/" + relativePath + (filename === "index" ? "" : ("/" + filename)),
         });
       }
@@ -139,13 +179,26 @@ export async function generateClients({
 export const ${apiObjectName} = {
 ${endpoints.map((e) =>
     // eslint-disable-next-line max-len
-    `  ${e.schemaName}: fromApi<${e.interfaceName}>("${e.method}", join(basePath, "${e.url}")),`,
+    `  ${e.functionName}: ${e.type === "ajv"
+      ? `fromApi<${e.importName}>`
+      : `fromZodRoute<typeof ${e.importName}>`
+    }("${e.method}", join(basePath, "${e.url}")),`,
   ).join(EOL)}
 };
   `;
 
+  const importsFromRootPackage: string[] = [];
+
+  if (endpoints.find((x) => x.type === "ajv")) {
+    importsFromRootPackage.push("fromApi");
+  }
+
+  if (endpoints.find((x) => x.type === "zod")) {
+    importsFromRootPackage.push("fromZodRoute");
+  }
+
   const fetchApiImportDeclaration = `
-import { fromApi } from "${fetchImport}";
+import { ${importsFromRootPackage.join(", ")} } from "${fetchImport}";
 import { join } from "path";
 `;
 

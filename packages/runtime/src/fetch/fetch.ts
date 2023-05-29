@@ -1,7 +1,8 @@
+import { ZodRouteSchema, ZodRouteSchemaToSchema } from "../route/zodRoute";
 import type {
   Querystring, RequestArgs,
 } from "../types/request";
-import type { GeneralSchema, SuccessResponse } from "../types/schema";
+import type { AnySchema, SuccessResponse } from "../types/schema";
 import { failEvent, finallyEvent, prefetchEvent, successEvent } from "./events";
 import { FETCH_ERROR, HttpError, TYPE_ERROR } from "./HttpError";
 import { parseQueryToQuerystring } from "./parseQueryToQuerystring";
@@ -37,6 +38,10 @@ export function fullFetch(
   let url = path;
   if (query) {
     url += parseQueryToQuerystring(query);
+  }
+
+  if (typeof window === "undefined") {
+    url = `http://127.0.0.1:${process.env.PORT || 3000}${url}`;
   }
 
   return fetch(url,
@@ -76,7 +81,7 @@ function checkIsJson(resp: Response) {
 
 type RejectHandler<TRej> = (reason: any) => TRej | PromiseLike<TRej>;
 
-export class JsonFetchResultPromiseLike<T extends GeneralSchema>
+export class JsonFetchResultPromiseLike<T extends AnySchema>
 implements PromiseLike<SuccessResponse<T>> {
 
   private promise: Promise<Response>;
@@ -191,7 +196,7 @@ implements PromiseLike<SuccessResponse<T>> {
  * the response will be thrown
  * @throws {JsonFetchError} If the statusCode is not [200, 300), a error will be thrown
  */
-export function jsonFetch<T extends GeneralSchema>(
+export function jsonFetch<T extends AnySchema>(
   info: FetchInfo,
   signal?: AbortSignal,
 ): JsonFetchResultPromiseLike<T> {
@@ -213,11 +218,11 @@ export function jsonFetch<T extends GeneralSchema>(
 
 export type JsonFetch = typeof jsonFetch;
 
-export function fromApi<TSchema extends GeneralSchema>(method: HttpMethod, url: string) {
+export function fromApi<TSchema extends AnySchema>(method: HttpMethod, url: string) {
   return function(
     args: RequestArgs<TSchema>,
     signal?: AbortSignal,
-  ): JsonFetchResultPromiseLike<TSchema>  {
+  ): JsonFetchResultPromiseLike<TSchema> {
 
     const anyArgs = args as any;
     // replace path params using query
@@ -232,4 +237,8 @@ export function fromApi<TSchema extends GeneralSchema>(method: HttpMethod, url: 
       body: anyArgs.body,
     }, signal);
   };
+}
+
+export function fromZodRoute<TSchema extends ZodRouteSchema>(method: HttpMethod, url: string) {
+  return fromApi<ZodRouteSchemaToSchema<TSchema>>(method, url);
 }

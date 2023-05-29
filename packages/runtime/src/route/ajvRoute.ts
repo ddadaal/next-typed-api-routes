@@ -2,10 +2,15 @@ import Ajv, { Options, SchemaObject, ValidateFunction } from "ajv";
 import addFormats from "ajv-formats";
 import addDraft2019Format from "ajv-formats-draft2019";
 import fastJson from "fast-json-stringify";
+import fs from "fs";
+import type { NextApiRequest, NextApiResponse } from "next";
+
+import type { AnySchema } from "../types/schema";
+import { OrPromise, returnError, ValueOf } from "./utils";
 
 type Serializer = (doc: string) => any;
 
-interface Validator {
+export interface Validator {
   query?: ValidateFunction;
   body?: ValidateFunction;
   responseSerializers?: Map<string, Serializer>;
@@ -18,7 +23,7 @@ interface SchemaFileContent {
 
 export function createValidatorsFromSchema(schemas: SchemaFileContent) {
 
-  const ajvOptions: Options = { useDefaults: true, allowUnionTypes: true, coerceTypes: "array"  };
+  const ajvOptions: Options = { useDefaults: true, allowUnionTypes: true, coerceTypes: "array" };
 
   // add shared models
   const ajv = new Ajv(ajvOptions);
@@ -60,3 +65,70 @@ export function createValidatorsFromSchema(schemas: SchemaFileContent) {
   return routeValiators;
 
 }
+
+
+let validators: Map<string, Validator>;
+
+
+
+export function route<S extends AnySchema>(
+  schemaName: string,
+  handler: (
+    req: Omit<NextApiRequest, "body"> & {
+      query: S["query"],
+      body: S["body"],
+    },
+    res: NextApiResponse<ValueOf<S["responses"]>>
+  ) => OrPromise<Partial<S["responses"]> | void>,
+): typeof handler {
+
+  if (validators) {
+    const schemas = JSON.parse(fs.readFileSync("./api-routes-schemas.json", "utf8"));
+    validators = createValidatorsFromSchema(schemas);
+  }
+
+  const validator = validators.get(schemaName);
+
+  if (!validator) {
+    throw new RangeError(`schemaName ${schemaName} is not valid.`);
+  }
+
+  return async (req, res) => {
+    if (validator.query) {
+      if (!validator.query(req.query)) {
+        returnError(res, "QUERY", validator.query.errors);
+        return;
+      }
+    }
+
+    if (validator.body) {
+      if (!validator.body(req.body)) {
+        returnError(res, "BODY", validator.body.errors);
+        return;
+      }
+    }
+
+    const resp = await handler(req, res);
+
+    if (resp) {
+
+      res.setHeader("content-type", "application/json");
+
+      const code = Object.keys(resp)[0];
+      res.status(Number(code));
+
+      const respBody = resp[code];
+
+      if (code === "204" || respBody === null) {
+        // @ts-ignore
+        res.send(undefined);
+      } else if (respBody) {
+        const serializer = validator.responseSerializers?.get(code);
+        const body = serializer ? serializer(respBody) : respBody;
+        res.send(body);
+      }
+
+    }
+  };
+}
+

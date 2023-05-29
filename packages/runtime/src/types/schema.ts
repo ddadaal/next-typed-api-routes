@@ -1,40 +1,38 @@
 export interface Schema<
   TQuerystring,
   TBody,
-  TResponses,
+  TResponses extends Record<number, unknown>,
 > {
   query?: TQuerystring;
   body?: TBody;
-  responses: TResponses;
+  responses: { [code in keyof TResponses]: TResponses[code] };
 }
 
-export type GeneralSchema = Schema<any, any, any>;
+export type AnySchema = Schema<unknown, unknown, Record<number, unknown>>;
 
 export interface SchemaObject {
   description: string;
   properties: {
-    query?: any;
-    body?: any;
-    responses:  { properties?: any };
+    query?: unknown;
+    body?: unknown;
+    responses: { properties?: unknown };
   }
 }
 
-export type Awaited<T> = T extends PromiseLike<infer U> ? Awaited<U> : T;
-
-export type Responses<T extends GeneralSchema> = T["responses"];
+export type Responses<T extends AnySchema> = T["responses"];
 
 export type ResponseBody<
-  TSchema extends GeneralSchema,
+  TSchema extends AnySchema,
   ResponseCode extends number = 200,
-> =
-  Awaited<Responses<TSchema>[ResponseCode]>;
+> = Awaited<Responses<TSchema>[ResponseCode]>;
 
 
-export type SuccessResponse<T extends GeneralSchema> =
+export type SuccessResponse<T extends AnySchema> =
   Responses<T>[200] extends object | null
   ? Responses<T>[200]
   : Responses<T>[201] extends object | null
   ? Responses<T>[201]
   : Responses<T>[204] extends null
   ? null
-  : never;
+  : never
+;

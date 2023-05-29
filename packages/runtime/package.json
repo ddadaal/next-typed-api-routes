@@ -32,7 +32,8 @@
     "ajv-formats": "^2.1.1",
     "ajv-formats-draft2019": "1.6.1",
     "fast-json-stringify": "4.1.0",
-    "tslib": "2.4.0"
+    "tslib": "2.4.0",
+    "zod": "3.21.4"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "22.0.0",

@@ -8,7 +8,7 @@ class Event<TArgs> {
     this.handlers.push(handler);
   };
 
-  execute =  (args: TArgs) => {
+  execute = (args: TArgs) => {
     this.handlers.forEach((h: (arg0: TArgs) => void) => h(args));
   };
 
