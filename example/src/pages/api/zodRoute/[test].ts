@@ -7,6 +7,7 @@ export const ZodRouteSchema = zodRouteSchema({
   responses: {
     200: z.object({ hello: z.string() }),
     404: z.object({ error: z.string() }),
+    500: z.null(),
   },
 });
 

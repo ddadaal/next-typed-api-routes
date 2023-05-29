@@ -1,14 +1,16 @@
-import { Static, TObject } from "@sinclair/typebox";
+import { Kind, Static, TNull, TObject } from "@sinclair/typebox";
 import fastJson from "fast-json-stringify";
 import { NextApiRequest, NextApiResponse } from "next";
 
 import { ajvOptions, createAjv } from "./ajv";
 import { OrPromise, returnError, Serializer, ValueOf } from "./utils";
 
+export type TypeboxReturnType = TObject | TNull;
+
 export interface TypeboxRouteSchema<
   TQuery extends TObject = TObject,
   TBody extends TObject = TObject,
-  TResponses extends Record<number, TObject> = Record<number, TObject>,
+  TResponses extends Record<number, TypeboxReturnType> = Record<number, TypeboxReturnType>,
 > {
   method: string;
   query?: TQuery;
@@ -18,7 +20,7 @@ export interface TypeboxRouteSchema<
 
 export type TypeboxRawType<T> = 
   T extends undefined ? undefined 
-    : T extends TObject ? Static<T>
+    : T extends TypeboxReturnType ? Static<T>
       : T;
 
 
@@ -56,8 +58,10 @@ export function typeboxRoute<TSchema extends TypeboxRouteSchema>(
     const serializers = new Map<string, Serializer>();
 
     for (const [code, schema] of Object.entries(responses)) {
-      const serializer = fastJson(schema, { ajv: ajvOptions });
-      serializers.set(code, serializer);
+      if (schema[Kind] === "Object") {
+        const serializer = fastJson(schema, { ajv: ajvOptions });
+        serializers.set(code, serializer);
+      }
     }
     return serializers;
   })(schema.responses);

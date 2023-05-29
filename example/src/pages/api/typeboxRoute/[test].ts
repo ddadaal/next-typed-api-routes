@@ -7,11 +7,12 @@ export const TypeboxRouteSchema = typeboxRouteSchema({
   responses: {
     200: Type.Object({ hello: Type.String() }),
     404: Type.Object({ error: Type.String() }),
+    500: Type.Null(),
   },
 });
 
 export default typeboxRoute(TypeboxRouteSchema, async (req) => {
-  
+
   if (req.body.error) {
     return { 404: { error: "123" } };
   } else {
