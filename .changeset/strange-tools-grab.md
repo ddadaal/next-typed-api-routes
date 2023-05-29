@@ -1,5 +1,5 @@
 ---
-"@ddadaal/next-typed-api-routes-runtime": minor
+"@ddadaal/next-typed-api-routes-runtime": patch
 ---
 
 support use Type.Null() as typebox route response type
