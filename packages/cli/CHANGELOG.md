@@ -1,5 +1,12 @@
 # Change Log
 
+## 0.8.0
+
+### Minor Changes
+
+- ad2373c: add support for typebox route
+- 5d44346: rename `route` to `staticRoute`. Also export `route` for backward compatibility
+
 ## 0.7.0
 
 ### Minor Changes
