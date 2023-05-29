@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.7.1
+
+### Patch Changes
+
+- eaddb94: support use Type.Null() as typebox route response type
+
 ## 0.7.0
 
 ### Minor Changes
