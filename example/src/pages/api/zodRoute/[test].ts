@@ -2,7 +2,7 @@ import { z, zodRoute, zodRouteSchema } from "@ddadaal/next-typed-api-routes-runt
 
 export const ZodRouteSchema = zodRouteSchema({
   method: "POST",
-  body: z.object({ info: z.string() }),
+  body: z.object({ error: z.boolean() }),
   query: z.object({ test: z.string() }),
   responses: {
     200: z.object({ hello: z.string() }),
@@ -11,5 +11,9 @@ export const ZodRouteSchema = zodRouteSchema({
 });
 
 export default zodRoute(ZodRouteSchema, async (req) => {
-  return { 200: { hello: `${req.body.info} + ${req.query.test}` } };
+  if (req.body.error) {
+    return { 404: { error: "error" }};
+  } else {
+    return { 200: { hello: `${req.query.test}` } };
+  }
 });

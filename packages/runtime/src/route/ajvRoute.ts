@@ -82,7 +82,7 @@ export function route<S extends AnySchema>(
   ) => OrPromise<Partial<S["responses"]> | void>,
 ): typeof handler {
 
-  if (validators) {
+  if (!validators) {
     const schemas = JSON.parse(fs.readFileSync("./api-routes-schemas.json", "utf8"));
     validators = createValidatorsFromSchema(schemas);
   }

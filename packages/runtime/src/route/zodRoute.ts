@@ -51,7 +51,7 @@ export function zodRoute<TSchema extends ZodRouteSchema>(
     }
 
     if (schema.body) {
-      const result = schema.body.safeParse(req.query);
+      const result = schema.body.safeParse(req.body);
       if (!result.success) {
         returnError(res, "BODY", result.error);
         return;

@@ -25,5 +25,6 @@ UserInterfaceState.xcuserstate
 .rpt2_cache/
 
 lib
+.pnpm-store
 
 .rollup.cache
