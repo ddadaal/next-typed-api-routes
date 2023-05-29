@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
 
-import { OrPromise, RawType, returnError, ValueOf } from "./utils";
+import { OrPromise, returnError, ValueOf } from "./utils";
 
 export interface ZodRouteSchema<
   TQuery extends z.ZodType = z.ZodType,
@@ -14,12 +14,15 @@ export interface ZodRouteSchema<
   responses: TResponses;
 }
 
-type ZodInferOrUndefined<T extends z.ZodType | undefined> = T extends undefined ? undefined : z.infer<NonNullable<T>>;
+export type ZodRawType<T> = 
+  T extends undefined ? undefined 
+    : T extends z.ZodType ? z.infer<T>
+      : T;
 
 export type ZodRouteSchemaToSchema<TSchema extends ZodRouteSchema> = {
-  query: ZodInferOrUndefined<TSchema["query"]>;
-  body: ZodInferOrUndefined<TSchema["body"]>;
-  responses: { [code in keyof TSchema["responses"] & number]: ZodInferOrUndefined<TSchema["responses"][code]> }
+  query: ZodRawType<TSchema["query"]>;
+  body: ZodRawType<TSchema["body"]>;
+  responses: { [code in keyof TSchema["responses"] & number]: ZodRawType<TSchema["responses"][code]> }
 }
 
 export const zodRouteSchema = <
@@ -30,14 +33,14 @@ export function zodRoute<TSchema extends ZodRouteSchema>(
   schema: TSchema,
   handler: (
     req: Omit<NextApiRequest, "body"> & {
-      query: RawType<TSchema["query"]>,
-      body: RawType<TSchema["body"]>,
+      query: ZodRawType<TSchema["query"]>,
+      body: ZodRawType<TSchema["body"]>,
     },
     res: NextApiResponse<
-      RawType<ValueOf<TSchema["responses"]>>
+      ZodRawType<ValueOf<TSchema["responses"]>>
     >
   ) => OrPromise<Partial<{
-    [code in keyof TSchema["responses"]]: RawType<ValueOf<TSchema["responses"][code]>>
+    [code in keyof TSchema["responses"] & number]: ZodRawType<TSchema["responses"][code]>
   }> | void>,
 ): typeof handler {
 

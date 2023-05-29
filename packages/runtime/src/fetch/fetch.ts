@@ -1,3 +1,4 @@
+import { TypeboxRouteSchema, TypeboxRouteSchemaToSchema } from "../route";
 import { ZodRouteSchema, ZodRouteSchemaToSchema } from "../route/zodRoute";
 import type {
   Querystring, RequestArgs,
@@ -242,3 +243,8 @@ export function fromApi<TSchema extends AnySchema>(method: HttpMethod, url: stri
 export function fromZodRoute<TSchema extends ZodRouteSchema>(method: HttpMethod, url: string) {
   return fromApi<ZodRouteSchemaToSchema<TSchema>>(method, url);
 }
+
+export function fromTypeboxRoute<TSchema extends TypeboxRouteSchema>(method: HttpMethod, url: string) {
+  return fromApi<TypeboxRouteSchemaToSchema<TSchema>>(method, url);
+}
+

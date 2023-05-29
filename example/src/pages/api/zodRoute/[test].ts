@@ -12,7 +12,7 @@ export const ZodRouteSchema = zodRouteSchema({
 
 export default zodRoute(ZodRouteSchema, async (req) => {
   if (req.body.error) {
-    return { 404: { error: "error" }};
+    return { 404: { error: "123" } };
   } else {
     return { 200: { hello: `${req.query.test}` } };
   }

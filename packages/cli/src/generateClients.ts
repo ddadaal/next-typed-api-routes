@@ -21,7 +21,13 @@ interface Import {
   relativePath: string;
 }
 
-export type ApiType = "zod" | "ajv";
+export const ApiTypes = {
+  zod: { libImport: "fromZodRoute", typeFormat: (typeName: string) => `typeof ${typeName}` },
+  typebox: { libImport: "fromTypeboxRoute", typeFormat: (typeName: string) => `typeof ${typeName}` },
+  ajv: { libImport: "fromApi", typeFormat: (typeName: string) => typeName },
+};
+
+export type ApiType = keyof typeof ApiTypes;
 
 interface Endpoint {
   functionName: string;
@@ -57,15 +63,19 @@ async function getApiObject(
 
         for (const statement of sourceFile.statements) {
 
-          // if there is a object that ends with Schema, consider it as a zod schema
           if (ts.isVariableStatement(statement)) {
             const declaration = statement.declarationList.declarations[0];
 
             if (ts.isIdentifier(declaration.name)
               && declaration.name.text.endsWith("Schema") && declaration.name.text.length > "Schema".length
               && declaration.initializer && ts.isCallExpression(declaration.initializer)
-                && ts.isObjectLiteralExpression(declaration.initializer.arguments[0])
+              && ts.isIdentifier(declaration.initializer.expression)
+              && ts.isObjectLiteralExpression(declaration.initializer.arguments[0])
             ) {
+
+              const schemaFunction = declaration.initializer.expression.text;
+
+              // zodRouteSchema or typeboxRouteSchema
               const schema = declaration.initializer.arguments[0];
 
               for (const property of schema.properties) {
@@ -76,7 +86,7 @@ async function getApiObject(
                   && ts.isStringLiteral(property.initializer)
                 ) {
                   found = {
-                    apiType: "zod",
+                    apiType: schemaFunction === "zodRouteSchema" ? "zod" : "typebox",
                     typeName: declaration.name.text,
                     method: property.initializer.text,
                   };
@@ -177,28 +187,25 @@ export async function generateClients({
   // use string instead of ts factories to easily style the code and reduce complexity
   const apiObjDeclaration = `
 export const ${apiObjectName} = {
-${endpoints.map((e) =>
-    // eslint-disable-next-line max-len
-    `  ${e.functionName}: ${e.type === "ajv"
-      ? `fromApi<${e.importName}>`
-      : `fromZodRoute<typeof ${e.importName}>`
-    }("${e.method}", join(basePath, "${e.url}")),`,
+${endpoints.map((e) => {
+
+    const { libImport, typeFormat } = ApiTypes[e.type];
+    return (
+      ` ${e.functionName}: ${libImport}<${typeFormat(e.importName)}>("${e.method}", join(basePath, "${e.url}")),`
+    );
+  },
   ).join(EOL)}
 };
   `;
 
-  const importsFromRootPackage: string[] = [];
+  const importsFromRootPackage = new Set<string>();
 
-  if (endpoints.find((x) => x.type === "ajv")) {
-    importsFromRootPackage.push("fromApi");
-  }
-
-  if (endpoints.find((x) => x.type === "zod")) {
-    importsFromRootPackage.push("fromZodRoute");
+  for (const endpoint of endpoints) {
+    importsFromRootPackage.add(ApiTypes[endpoint.type].libImport);
   }
 
   const fetchApiImportDeclaration = `
-import { ${importsFromRootPackage.join(", ")} } from "${fetchImport}";
+import { ${Array.from(importsFromRootPackage.values()).join(", ")} } from "${fetchImport}";
 import { join } from "path";
 `;
 

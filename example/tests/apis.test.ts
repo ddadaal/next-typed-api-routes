@@ -30,6 +30,34 @@ test("should call zodRoute from browser", async ({ page }) => {
   expect(await text?.innerText()).toBe("123");
 });
 
+test("should call typeboxRoute", async () => {
+  const resp = await api.typeboxRoute({ body: { error: false }, query: { test: "123" } });
+
+  expect(resp.hello).toBe("123");
+});
+
+test("typeboxRoute should handler error", async () => {
+  const error = await api.typeboxRoute({ body: { error: true }, query: { test: "123" } })
+    .httpError(404, (err) => {
+      expect(err.error).toBe("error");
+      return err;
+    })
+    .then(() => undefined)
+    .catch((e) => e);
+
+  expect(error).toBeDefined();
+});
+
+test("should call typeboxRoute from browser", async ({ page }) => {
+  await page.goto("http://localhost:3000");
+
+  await page.click("#typeboxRoute button");
+
+  const text = await page.$("#typeboxRoute p");
+
+  expect(await text?.innerText()).toBe("123");
+});
+
 test("should call register", async () => {
   const resp = await api.register({ body: { username: "123", password: "123" } });
 

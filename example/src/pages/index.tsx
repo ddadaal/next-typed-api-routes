@@ -23,6 +23,27 @@ export const ZodRouteTestDiv = () => {
   );
 };
 
+export const TypeboxRouteTestDiv = () => {
+
+  const [resp, setResp] = useState("");
+
+  return (
+    <div id="typeboxRoute">
+      <button id="button" onClick={() => {
+        api.typeboxRoute({ body: { error: false }, query: { test: "123" } })
+          .then((resp) => {
+            setResp(resp.hello);
+          });
+      }}>
+        Call TypeboxRoute
+      </button>
+      <p id="p">
+        {resp}
+      </p>
+    </div>
+  );
+};
+
 export const AjvRouteTestDiv = () => {
 
   const [username, setUsername] = useState("");
@@ -81,9 +102,11 @@ const Home: NextPage = () => {
       <div>
         <AjvRouteTestDiv />
       </div>
-
       <div>
         <ZodRouteTestDiv />
+      </div>
+      <div>
+        <TypeboxRouteTestDiv />
       </div>
     </div>
   );

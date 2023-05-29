@@ -1,14 +1,12 @@
-import Ajv, { Options, SchemaObject, ValidateFunction } from "ajv";
-import addFormats from "ajv-formats";
-import addDraft2019Format from "ajv-formats-draft2019";
+import { SchemaObject, ValidateFunction } from "ajv";
 import fastJson from "fast-json-stringify";
 import fs from "fs";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 import type { AnySchema } from "../types/schema";
-import { OrPromise, returnError, ValueOf } from "./utils";
+import { ajvOptions, createAjv } from "./ajv";
+import { OrPromise, returnError, Serializer, ValueOf } from "./utils";
 
-type Serializer = (doc: string) => any;
 
 export interface Validator {
   query?: ValidateFunction;
@@ -23,14 +21,7 @@ interface SchemaFileContent {
 
 export function createValidatorsFromSchema(schemas: SchemaFileContent) {
 
-  const ajvOptions: Options = { useDefaults: true, allowUnionTypes: true, coerceTypes: "array" };
-
-  // add shared models
-  const ajv = new Ajv(ajvOptions);
-
-  // add formats support
-  addFormats(ajv);
-  addDraft2019Format(ajv);
+  const ajv = createAjv();
 
   // add schemas
   for (const model of Object.values(schemas.models)) {

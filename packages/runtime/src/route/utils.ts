@@ -1,5 +1,4 @@
 import { NextApiResponse } from "next";
-import { z } from "zod";
 
 export type ValueOf<T> = T[keyof T];
 
@@ -14,5 +13,4 @@ export function returnError(
   });
 }
 
-export type RawType<T> = T extends z.ZodType ? z.infer<T> : T;
-
+export type Serializer = (doc: string) => any;
