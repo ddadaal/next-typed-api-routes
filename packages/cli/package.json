@@ -31,12 +31,12 @@
   },
   "dependencies": {
     "ts-json-schema-generator": "1.2.0",
-    "tslib": "^2.3.1",
-    "typescript": "4.9.5",
-    "yargs": "^17.2.1"
+    "tslib": "^2.5.2",
+    "typescript": "4.9.3",
+    "yargs": "^17.7.2"
   },
   "devDependencies": {
-    "@types/yargs": "17.0.10"
+    "@types/yargs": "17.0.24"
   },
   "gitHead": "4f07b2ba2c55d957ae6862e0000d6049e36140f7"
 }

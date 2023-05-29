@@ -28,7 +28,7 @@ yargs(hideBin(process.argv))
       },
       apiObjectName: { type: "string", default: "api" },
       basePathVar: { type: "string", default: "process.env.NEXT_PUBLIC_BASE_PATH || \"\"" },
-      extraImports: { type: "array", default: []},
+      extraImports: { type: "array", string: true, default: []},
     });
   }, (argv) => {
     generateClients(argv);

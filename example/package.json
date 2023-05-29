@@ -11,15 +11,15 @@
   },
   "dependencies": {
     "@ddadaal/next-typed-api-routes-runtime": "workspace:*",
-    "next": "12.1.6",
-    "react": "18.1.0",
-    "react-dom": "18.1.0"
+    "next": "13.4.4",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.22.1",
     "@ddadaal/next-typed-api-routes-cli": "workspace:*",
-    "@next/bundle-analyzer": "^12.0.4",
-    "@types/react": "18.0.12",
-    "@babel/core": ">=7.0.0 <8.0.0",
-    "@playwright/test": "1.34.3"
+    "@next/bundle-analyzer": "^13.4.4",
+    "@playwright/test": "1.34.3",
+    "@types/react": "18.2.7"
   }
 }
