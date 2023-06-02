@@ -22,13 +22,9 @@ yargs(hideBin(process.argv))
         default: "src/apis/api.ts",
       },
       apiRoutesPath: { type: "string", default: "src/pages/api" },
-      fetchImport: {
-        type: "string",
-        default: "@ddadaal/next-typed-api-routes-runtime/lib/client",
-      },
+      clientObjectName: { type: "string", default: "apiClient" },
+      clientObjectImportPath: { type: "string", default: "src/apis/client" },
       apiObjectName: { type: "string", default: "api" },
-      basePathVar: { type: "string", default: "process.env.NEXT_PUBLIC_BASE_PATH || \"\"" },
-      extraImports: { type: "array", string: true, default: []},
     });
   }, (argv) => {
     generateClients(argv);

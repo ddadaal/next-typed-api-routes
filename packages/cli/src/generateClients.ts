@@ -34,7 +34,7 @@ interface Endpoint {
   importName: string;
   type: ApiType;
   method: string;
-  url: string;
+  path: string;
 }
 
 async function getApiObject(
@@ -143,7 +143,7 @@ async function getApiObject(
           importName: found.typeName,
           functionName,
           type: found.apiType,
-          url: "/api/" + relativePath + (filename === "index" ? "" : ("/" + filename)),
+          path: "/api/" + relativePath + (filename === "index" ? "" : ("/" + filename)),
         });
       }
     } else {
@@ -155,19 +155,17 @@ async function getApiObject(
 export interface GenerateApiClientsArgs {
   apiFilePath?: string;
   apiRoutesPath?: string;
-  fetchImport?: string;
+  clientObjectName: string;
+  clientObjectImportPath: string;
   apiObjectName?: string;
-  basePathVar?: string;
-  extraImports?: string[],
 }
 
 export async function generateClients({
   apiFilePath = "src/apis/api.ts",
   apiRoutesPath = "src/pages/api",
-  fetchImport = "@ddadaal/next-typed-api-routes-runtime/lib/client",
+  clientObjectName,
+  clientObjectImportPath,
   apiObjectName = "api",
-  basePathVar = "process.env.NEXT_PUBLIC_BASE_PATH || \"\"",
-  extraImports = [],
 }: GenerateApiClientsArgs) {
 
   if (!apiRoutesPath.endsWith("/")) {
@@ -182,8 +180,6 @@ export async function generateClients({
 
   await getApiObject(apiRoutesPath, "", endpoints, imports);
 
-  const basePathVarDeclaration = `const basePath = ${basePathVar};`;
-
   // use string instead of ts factories to easily style the code and reduce complexity
   const apiObjDeclaration = `
 export const ${apiObjectName} = {
@@ -191,22 +187,16 @@ ${endpoints.map((e) => {
 
     const { libImport, typeFormat } = ApiTypes[e.type];
     return (
-      ` ${e.functionName}: ${libImport}<${typeFormat(e.importName)}>("${e.method}", join(basePath, "${e.url}")),`
+      `  ${e.functionName}: ${clientObjectName}.${libImport}<${typeFormat(e.importName)}>` +
+      `("${e.method}", "${e.path}"),`
     );
   },
   ).join(EOL)}
 };
   `;
 
-  const importsFromRootPackage = new Set<string>();
-
-  for (const endpoint of endpoints) {
-    importsFromRootPackage.add(ApiTypes[endpoint.type].libImport);
-  }
-
   const fetchApiImportDeclaration = `
-import { ${Array.from(importsFromRootPackage.values()).join(", ")} } from "${fetchImport}";
-import { join } from "path";
+import { ${clientObjectName} } from "${clientObjectImportPath}";
 `;
 
   const importDeclarations = imports.map(({ relativePath, interfaceName }) => (
@@ -218,10 +208,6 @@ import { join } from "path";
     fetchApiImportDeclaration +
     EOL + EOL +
     importDeclarations +
-    EOL + EOL +
-    extraImports.join(EOL) +
-    EOL + EOL +
-    basePathVarDeclaration +
     EOL + EOL +
     apiObjDeclaration;
 

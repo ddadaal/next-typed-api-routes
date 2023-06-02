@@ -70,13 +70,24 @@ export default route<TestApiSchema>("TestApiSchema", async (req) => {
 });
 ```
 
-3. Run `npx ntar schema && npx ntar client`
+3. Create `apiClient` object
+
+Create `src/apis/client.ts` with the following content
+
+```ts
+import { createApiClient } from "@ddadaal/next-typed-api-routes-runtime";
+
+// Pass custom client config here
+export const apiClient = createApiClient({});
+```
+
+4. Run `npx ntar schema && npx ntar client`
 
 `api-routes-schemas.json` will be generated at cwd. You should never edit it directly. The project cannot start without this file.
 
 `src/apis/api.ts` will be generated at `src/apis`.
 
-4. Import the `api` variable from `src/apis/api.ts` to use the client.
+5. Import the `api` variable from `src/apis/api.ts` to use the client.
 
 ```ts
 import { api } from "src/apis/api";
@@ -145,39 +156,6 @@ interface TestSchema {
   }
 }
 ```
-
-# Custom basePath
-
-Custom basePath is now supported. The generated API client will use `NEXT_PUBLIC_BASE_PATH` env for the base path for all the api routes. If you are upgrading from an older version, you should run `npx ntar client` to regenerate the api file to leverage this feature. 
-
-To keep the basePath config consistent in both Next.js and this library, you can set `basePath: process.env.NEXT_PUBLIC_BASE_PATH` in the `next.config.js`, and use the `NEXT_PUBLIC_BASE_PATH` env. Check out [the Next.js doc](https://nextjs.org/docs/api-reference/next.config.js/basepath) to configure basePath for Next.js.
-
-```js
-// next.config.js
-module.exports = {
-  basePath: process.env.NEXT_PUBLIC_BASE_PATH,
-}
-```
-
-You can also use `--basePathVar` option of `ntar` cli to customize the value of base path. 
-
-For example, when running `npx ntar client --basePathVar publicConfig.BASE_PATH`, the client file will look like:
-
-```tsx
-import { fromApi } from "@ddadaal/next-typed-api-routes-runtime/lib/client";
-import { join } from "path";
-
-import type { LoginSchema } from "src/pages/api/login/[username]";
-
-// the value of basePath is the same as the basePathVar option
-const basePath = publicConfig.BASE_PATH; 
-
-export const api = {
-  login: fromApi<LoginSchema>("GET", join(basePath, "/api/login/[username]")),
-};
-```
-
-If your `basePath` declaration needs imports, you can also use `extraImports` cli option to add extra imports into the client file. Multiple `extraImports` options can be specified.
 
 # Tips
 

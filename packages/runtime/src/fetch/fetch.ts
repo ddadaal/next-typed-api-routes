@@ -1,14 +1,8 @@
-import { TypeboxRouteSchema, TypeboxRouteSchemaToSchema } from "../route";
-import { ZodRouteSchema, ZodRouteSchemaToSchema } from "../route/zodRoute";
-import type {
-  Querystring, RequestArgs,
-} from "../types/request";
+import type { Querystring } from "../types/request";
 import type { AnySchema, SuccessResponse } from "../types/schema";
 import { failEvent, finallyEvent, prefetchEvent, successEvent } from "./events";
 import { FETCH_ERROR, HttpError, TYPE_ERROR } from "./HttpError";
 import { parseQueryToQuerystring } from "./parseQueryToQuerystring";
-import { replacePathArgs } from "./replacePathArgs";
-import { removeNullOrUndefinedKey } from "./utils";
 
 function isServer() {
   return typeof window === "undefined";
@@ -20,45 +14,29 @@ function isFormData(a: any): a is FormData {
 
 export type HttpMethod = "GET" | "POST" | "DELETE" | "PATCH" | "PUT";
 
-let token = "";
-
-export function changeBearerToken(newToken: string): void {
-  token = newToken;
-}
-
 
 export function fullFetch(
-  path: string,
+  url: string,
   query?: Querystring,
   init?: RequestInit,
 ): Promise<Response> {
-  const headers = token
-    ? { ...init?.headers, "authorization": `Bearer ${token}` }
-    : init?.headers ?? {};
-
-  let url = path;
   if (query) {
     url += parseQueryToQuerystring(query);
   }
 
-  if (typeof window === "undefined") {
-    url = `http://127.0.0.1:${process.env.PORT || 3000}${url}`;
-  }
-
   return fetch(url,
     {
-      ...init,
-      headers,
       mode: "cors",
       // disable cache for IE11
       cache: "no-cache",
+      ...init,
     });
 }
 
 export type FullFetch = typeof fullFetch;
 
 export interface FetchInfo {
-  path: string;
+  url: string;
   method?: HttpMethod;
   query?: Querystring;
   body?: unknown;
@@ -206,7 +184,7 @@ export function jsonFetch<T extends AnySchema>(
 
   prefetchEvent.execute(undefined);
 
-  return new JsonFetchResultPromiseLike(fullFetch(info.path, info.query, {
+  return new JsonFetchResultPromiseLike(fullFetch(info.url, info.query, {
     method: info.method ?? "GET",
     headers: {
       ...isForm ? undefined : { "content-type": "application/json" },
@@ -218,33 +196,4 @@ export function jsonFetch<T extends AnySchema>(
 }
 
 export type JsonFetch = typeof jsonFetch;
-
-export function fromStaticRoute<TSchema extends AnySchema>(method: HttpMethod, url: string) {
-  return function(
-    args: RequestArgs<TSchema>,
-    signal?: AbortSignal,
-  ): JsonFetchResultPromiseLike<TSchema> {
-
-    const anyArgs = args as any;
-    // replace path params using query
-    const replacedPath = anyArgs.query
-      ? replacePathArgs(url, anyArgs.query)
-      : url;
-
-    return jsonFetch({
-      path: replacedPath,
-      method: method,
-      query: removeNullOrUndefinedKey(anyArgs.query),
-      body: anyArgs.body,
-    }, signal);
-  };
-}
-
-export function fromZodRoute<TSchema extends ZodRouteSchema>(method: HttpMethod, url: string) {
-  return fromStaticRoute<ZodRouteSchemaToSchema<TSchema>>(method, url);
-}
-
-export function fromTypeboxRoute<TSchema extends TypeboxRouteSchema>(method: HttpMethod, url: string) {
-  return fromStaticRoute<TypeboxRouteSchemaToSchema<TSchema>>(method, url);
-}
 

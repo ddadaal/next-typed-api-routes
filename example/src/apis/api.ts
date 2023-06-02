@@ -1,21 +1,15 @@
 /* eslint-disable max-len */
 
-import { fromStaticRoute, fromTypeboxRoute, fromZodRoute } from "@ddadaal/next-typed-api-routes-runtime/lib/client";
-import { join } from "path";
+import { apiClient } from "src/apis/client";
 import type { LoginSchema } from "src/pages/api/login/[username]";
 import type { RegisterSchema } from "src/pages/api/register/index";
 import type { TypeboxRouteSchema } from "src/pages/api/typeboxRoute/[test]";
 import type { ZodRouteSchema } from "src/pages/api/zodRoute/[test]";
 
 
-
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
-
-
 export const api = {
-  login: fromStaticRoute<LoginSchema>("GET", join(basePath, "/api/login/[username]")),
-  register: fromStaticRoute<RegisterSchema>("POST", join(basePath, "/api/register")),
-  typeboxRoute: fromTypeboxRoute<typeof TypeboxRouteSchema>("POST", join(basePath, "/api/typeboxRoute/[test]")),
-  zodRoute: fromZodRoute<typeof ZodRouteSchema>("POST", join(basePath, "/api/zodRoute/[test]")),
+  login: apiClient.fromStaticRoute<LoginSchema>("GET", "/api/login/[username]"),
+  register: apiClient.fromStaticRoute<RegisterSchema>("POST", "/api/register"),
+  typeboxRoute: apiClient.fromTypeboxRoute<typeof TypeboxRouteSchema>("POST", "/api/typeboxRoute/[test]"),
+  zodRoute: apiClient.fromZodRoute<typeof ZodRouteSchema>("POST", "/api/zodRoute/[test]"),
 };
-  
