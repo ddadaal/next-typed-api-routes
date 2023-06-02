@@ -75,7 +75,7 @@ export default route<TestApiSchema>("TestApiSchema", async (req) => {
 Create `src/apis/client.ts` with the following content
 
 ```ts
-import { createApiClient } from "@ddadaal/next-typed-api-routes-runtime";
+import { createApiClient } from "@ddadaal/next-typed-api-routes-runtime/lib/client";
 
 // Pass custom client config here
 export const apiClient = createApiClient({});
