@@ -1,5 +1,15 @@
 # Change Log
 
+## 0.8.0
+
+### Minor Changes
+
+- f9b9a41: Add api config object used to configure API client
+
+### Patch Changes
+
+- 0afd2d2: add support for any, unknown, union and intersect in typebox route
+
 ## 0.7.1
 
 ### Patch Changes

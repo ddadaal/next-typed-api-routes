@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.9.0
+
+### Minor Changes
+
+- f9b9a41: Add api config object used to configure API client
+
 ## 0.8.0
 
 ### Minor Changes
