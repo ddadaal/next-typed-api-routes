@@ -5,7 +5,7 @@ export const TypeboxRouteSchema = typeboxRouteSchema({
   body: Type.Object({ error: Type.Boolean() }),
   query: Type.Object({ test: Type.String() }),
   responses: {
-    200: Type.Intersect([Type.Object({ hello: Type.String() })], Type.Object({})),
+    200: Type.Intersect([Type.Object({ hello: Type.String() }), Type.Object({})]),
     404: Type.Object({ error: Type.String() }),
     405: Type.Any(),
     500: Type.Null(),
