@@ -1,11 +1,11 @@
-import { Kind, Static, TNull, TObject } from "@sinclair/typebox";
+import { Kind, Static, TAny, TIntersect, TNull, TObject, TUnion, TUnknown } from "@sinclair/typebox";
 import fastJson from "fast-json-stringify";
 import { NextApiRequest, NextApiResponse } from "next";
 
 import { ajvOptions, createAjv } from "./ajv";
 import { OrPromise, returnError, Serializer, ValueOf } from "./utils";
 
-export type TypeboxReturnType = TObject | TNull;
+export type TypeboxReturnType = TObject | TNull | TIntersect | TUnion | TAny | TUnknown;
 
 export interface TypeboxRouteSchema<
   TQuery extends TObject = TObject,
