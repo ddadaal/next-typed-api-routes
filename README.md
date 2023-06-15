@@ -32,7 +32,7 @@ Migrate from v0.2? See the [migration guide](#migrate-from-v02)!
 1. Install the packages in your Next.js TypeScript project
 
 ```bash
-npm install --save @ddadaal/next-typed-api-routes-runtime
+npm install --save @ddadaal/next-typed-api-routes-runtime zod @sinclair/typebox
 npm install -D @ddadaal/next-typed-api-routes-cli
 ```
 
