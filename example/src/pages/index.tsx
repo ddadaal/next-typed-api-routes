@@ -103,8 +103,8 @@ export const FailEventTestDiv = () => {
     const handler = (e: HttpError) => {
       setErrors((errors) => [...errors, e]);
     };
-    failEvent.register(handler);
-    return () => failEvent.unregister(handler);
+    const unregister = failEvent.register(handler);
+    return unregister;
   }, []);
 
 

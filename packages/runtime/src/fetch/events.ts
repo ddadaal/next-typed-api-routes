@@ -6,6 +6,8 @@ class Event<TArgs> {
 
   register = (handler: (args: TArgs) => void) => {
     this.handlers.push(handler);
+
+    return () => this.unregister(handler);
   };
 
   execute = (args: TArgs) => {
