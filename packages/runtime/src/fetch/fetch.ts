@@ -1,7 +1,7 @@
 import type { Querystring } from "../types/request";
 import type { AnySchema, SuccessResponse } from "../types/schema";
 import { failEvent, finallyEvent, prefetchEvent, successEvent } from "./events";
-import { FETCH_ERROR, HttpError, TYPE_ERROR } from "./HttpError";
+import { FETCH_ERROR, HttpError, OriginalRequest, TYPE_ERROR } from "./HttpError";
 import { parseQueryToQuerystring } from "./parseQueryToQuerystring";
 
 function isServer() {
@@ -65,12 +65,15 @@ implements PromiseLike<SuccessResponse<T>> {
 
   private promise: Promise<Response>;
   private httpErrorHandler: Map<number, (error: any) => unknown>;
+  private request: OriginalRequest;
 
   constructor(
     promise: Promise<Response>,
+    request: OriginalRequest,
   ) {
     this.promise = promise;
     this.httpErrorHandler = new Map();
+    this.request = request;
   }
 
   then<TSuc = SuccessResponse<T>, TRej = never>(
@@ -93,8 +96,9 @@ implements PromiseLike<SuccessResponse<T>> {
             throw resp;
           }
         } else {
+
           const text = await resp.text();
-          const payload = new HttpError(resp.status, tryParseJson(text), text);
+          const payload = new HttpError(resp.status, tryParseJson(text), text, this.request);
 
           const handler = this.httpErrorHandler.get(resp.status);
 
@@ -119,10 +123,10 @@ implements PromiseLike<SuccessResponse<T>> {
         };
 
         if (r.name === "FetchError") {
-          const payload = new HttpError(FETCH_ERROR, r);
+          const payload = new HttpError(FETCH_ERROR, r, undefined, this.request);
           failEvent.execute(payload);
         } else if (r instanceof TypeError) {
-          const payload = new HttpError(TYPE_ERROR, r);
+          const payload = new HttpError(TYPE_ERROR, r, undefined, this.request);
           failEvent.execute(payload);
         }
 
@@ -192,7 +196,11 @@ export function jsonFetch<T extends AnySchema>(
     },
     body: isForm ? (info.body as any) : JSON.stringify(info.body),
     signal,
-  }));
+  }), {
+    method: info.method ?? "GET", url: info.url,
+    body: info.body, headers: info.headers,
+    query: info.query,
+  });
 }
 
 export type JsonFetch = typeof jsonFetch;

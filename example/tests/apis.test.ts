@@ -1,4 +1,6 @@
+import { HttpError } from "@ddadaal/next-typed-api-routes-runtime";
 import { expect, test } from "@playwright/test";
+import { formatHttpErrors } from "src/pages/errors";
 
 import { api } from "../src/apis/api";
 
@@ -71,7 +73,7 @@ test("should call login", async () => {
 });
 
 test("should validate email", async () => {
-  const resp = await api.login({ query: { password: "123", username: "123" } }) 
+  const resp = await api.login({ query: { password: "123", username: "123" } })
     .httpError(400, (err: any) => {
       expect(err.code).toBe("QUERY_VALIDATION_ERROR");
       return err;
@@ -103,4 +105,21 @@ test("should handle error in browser", async ({ page }) => {
   const text = await page.$("#ajvRoute #result");
 
   expect(await text?.innerText()).toBe("401 NotExists");
+});
+
+test("should handle event", async ({ page }) => {
+  await page.goto("http://localhost:3000");
+
+  await page.click("#errors button");
+
+  const text = await page.waitForSelector("#errors > div");
+
+  expect(await text?.innerText()).toBe(formatHttpErrors([
+    new HttpError(404, { error: "123" }, JSON.stringify({ error: "123" }), {
+      method: "POST",
+      url: "/api/zodRoute/123",
+      body: { error: true },
+      query: {},
+    }),
+  ]));
 });

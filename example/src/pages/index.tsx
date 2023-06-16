@@ -1,6 +1,8 @@
+import { failEvent, HttpError } from "@ddadaal/next-typed-api-routes-runtime/lib/client";
 import type { NextPage } from "next";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { api } from "src/apis/api";
+import { formatHttpErrors } from "src/pages/errors";
 
 export const ZodRouteTestDiv = () => {
 
@@ -93,6 +95,36 @@ export const AjvRouteTestDiv = () => {
   );
 };
 
+export const FailEventTestDiv = () => {
+
+  const [errors, setErrors] = useState<HttpError[]>([]);
+
+  useEffect(() => {
+    const handler = (e: HttpError) => {
+      setErrors((errors) => [...errors, e]);
+    };
+    failEvent.register(handler);
+    return () => failEvent.unregister(handler);
+  }, []);
+
+
+  return (
+    <div id="errors">
+      <button onClick={async () => {
+        await api.zodRoute({ body: { error: true }, query: { test: "123" } });
+      }}>
+        Call Error zodRoute
+      </button>
+      {errors.length > 0 ? (
+        <div>
+          {formatHttpErrors(errors)}
+        </div>
+      ) : undefined}
+    </div>
+  );
+
+};
+
 const Home: NextPage = () => {
 
 
@@ -107,6 +139,9 @@ const Home: NextPage = () => {
       </div>
       <div>
         <TypeboxRouteTestDiv />
+      </div>
+      <div>
+        <FailEventTestDiv />
       </div>
     </div>
   );
