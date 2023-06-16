@@ -1,5 +1,13 @@
 # Change Log
 
+## 0.8.1
+
+### Patch Changes
+
+- 4b82e96: add request info to HttpError
+- f0038d9: event register functions return unregister function
+- 897536f: make typebox and zod as peerDependencies
+
 ## 0.8.0
 
 ### Minor Changes
