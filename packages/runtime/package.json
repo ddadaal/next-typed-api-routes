@@ -31,18 +31,18 @@
     "ajv": "^8.12.0",
     "ajv-formats": "^2.1.1",
     "ajv-formats-draft2019": "1.6.1",
-    "fast-json-stringify": "5.7.0",
-    "tslib": "2.5.2"
+    "fast-json-stringify": "5.8.0",
+    "tslib": "2.6.1"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "25.0.0",
+    "@rollup/plugin-commonjs": "25.0.3",
     "@rollup/plugin-json": "^6.0.0",
     "@rollup/plugin-typescript": "^11.1.1",
     "rollup": "^3.23.0",
     "rollup-plugin-terser": "^7.0.2",
-    "typescript": "5.0.4",
+    "typescript": "5.1.6",
     "zod": "3.21.4",
-    "@sinclair/typebox": "0.28.13"
+    "@sinclair/typebox": "0.30.4"
   },
   "peerDependencies": {
     "next": ">=11.x",
