@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.8.2
+
+### Patch Changes
+
+- 3649b7e: chore(deps): update all non-major dependencies
+
 ## 0.8.1
 
 ### Patch Changes
