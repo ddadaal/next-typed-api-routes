@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.9.1
+
+### Patch Changes
+
+- 3649b7e: chore(deps): update all non-major dependencies
+
 ## 0.9.0
 
 ### Minor Changes
