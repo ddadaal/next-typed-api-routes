@@ -112,8 +112,8 @@ importers:
         specifier: ^2.5.2
         version: 2.5.2
       typescript:
-        specifier: 4.9.5
-        version: 4.9.5
+        specifier: 5.4.3
+        version: 5.4.3
       yargs:
         specifier: ^17.7.2
         version: 17.7.2
@@ -6286,6 +6286,12 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
     dev: true
+
+  /typescript@5.4.3:
+    resolution: {integrity: sha512-KrPd3PKaCLr78MalgiwJnA25Nm8HAmdwN3mYUYZgG/wizIo9EainNVQI9/yDavtVFRN2h3k8uf3GLHuhDMgEHg==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+    dev: false
 
   /uglify-js@3.17.4:
     resolution: {integrity: sha512-T9q82TJI9e/C1TAxYvfb16xO120tMVFZrGA3f9/P4424DNu6ypK103y0GPFVa17yotwSyZW5iYXgjYHkGrJW/g==}
