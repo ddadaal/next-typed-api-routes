@@ -16,7 +16,7 @@ importers:
         version: 2.26.2
       '@ddadaal/eslint-config':
         specifier: 1.9.0
-        version: 1.9.0(@typescript-eslint/eslint-plugin@6.2.1)(eslint-import-resolver-typescript@3.5.5)(eslint-plugin-import@2.28.0)(eslint-plugin-simple-import-sort@10.0.0)(eslint@8.46.0)(typescript@5.1.6)
+        version: 1.9.0(@typescript-eslint/eslint-plugin@6.2.1)(eslint-import-resolver-typescript@3.5.5)(eslint-plugin-import@2.28.0)(eslint-plugin-simple-import-sort@12.1.1)(eslint@8.46.0)(typescript@5.1.6)
       '@types/eslint':
         specifier: 8.44.2
         version: 8.44.2
@@ -45,8 +45,8 @@ importers:
         specifier: 7.33.1
         version: 7.33.1(eslint@8.46.0)
       eslint-plugin-simple-import-sort:
-        specifier: 10.0.0
-        version: 10.0.0(eslint@8.46.0)
+        specifier: 12.1.1
+        version: 12.1.1(eslint@8.46.0)
       jest:
         specifier: 29.6.2
         version: 29.6.2(@types/node@20.4.8)
@@ -685,7 +685,7 @@ packages:
       prettier: 2.8.8
     dev: true
 
-  /@ddadaal/eslint-config@1.9.0(@typescript-eslint/eslint-plugin@6.2.1)(eslint-import-resolver-typescript@3.5.5)(eslint-plugin-import@2.28.0)(eslint-plugin-simple-import-sort@10.0.0)(eslint@8.46.0)(typescript@5.1.6):
+  /@ddadaal/eslint-config@1.9.0(@typescript-eslint/eslint-plugin@6.2.1)(eslint-import-resolver-typescript@3.5.5)(eslint-plugin-import@2.28.0)(eslint-plugin-simple-import-sort@12.1.1)(eslint@8.46.0)(typescript@5.1.6):
     resolution: {integrity: sha512-k6RKAT1FUGBEpyB5rRS/RuF20pA/H8u0cBNUf7xKDxHcTk/yR3oN0FjtxmAPkZhVuKjoUWvGniSlEeg1zE3K2g==}
     peerDependencies:
       '@typescript-eslint/eslint-plugin': '>=5.37.0'
@@ -699,7 +699,7 @@ packages:
       eslint: 8.46.0
       eslint-import-resolver-typescript: 3.5.5(@typescript-eslint/parser@6.2.1)(eslint-plugin-import@2.28.0)(eslint@8.46.0)
       eslint-plugin-import: 2.28.0(@typescript-eslint/parser@6.2.1)(eslint-import-resolver-typescript@3.5.5)(eslint@8.46.0)
-      eslint-plugin-simple-import-sort: 10.0.0(eslint@8.46.0)
+      eslint-plugin-simple-import-sort: 12.1.1(eslint@8.46.0)
     optionalDependencies:
       eslint-plugin-react: 7.33.1(eslint@8.46.0)
     transitivePeerDependencies:
@@ -2891,8 +2891,8 @@ packages:
       string.prototype.matchall: 4.0.8
     dev: true
 
-  /eslint-plugin-simple-import-sort@10.0.0(eslint@8.46.0):
-    resolution: {integrity: sha512-AeTvO9UCMSNzIHRkg8S6c3RPy5YEwKWSQPx3DYghLedo2ZQxowPFLGDN1AZ2evfg6r6mjBSZSLxLFsWSu3acsw==}
+  /eslint-plugin-simple-import-sort@12.1.1(eslint@8.46.0):
+    resolution: {integrity: sha512-6nuzu4xwQtE3332Uz0to+TxDQYRLTKRESSc2hefVT48Zc8JthmN23Gx9lnYhu0FtkRSL1oxny3kJ2aveVhmOVA==}
     peerDependencies:
       eslint: '>=5.0.0'
     dependencies:
