@@ -32,7 +32,7 @@
   "dependencies": {
     "ts-json-schema-generator": "1.2.0",
     "tslib": "^2.5.2",
-    "typescript": "4.9.5",
+    "typescript": "5.6.3",
     "yargs": "^17.7.2"
   },
   "devDependencies": {
