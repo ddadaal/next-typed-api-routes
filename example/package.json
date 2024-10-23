@@ -20,7 +20,7 @@
   "devDependencies": {
     "@babel/core": "^7.22.1",
     "@ddadaal/next-typed-api-routes-cli": "workspace:*",
-    "@next/bundle-analyzer": "^13.4.4",
+    "@next/bundle-analyzer": "^15.0.0",
     "@playwright/test": "1.36.2",
     "@types/react": "18.2.18"
   }
