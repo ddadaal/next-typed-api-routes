@@ -9,7 +9,7 @@
   },
   "homepage": "https://github.com/ddadaal/next-typed-api-routes#readme",
   "devDependencies": {
-    "@changesets/changelog-git": "0.1.14",
+    "@changesets/changelog-git": "1.0.0",
     "@changesets/cli": "2.26.2",
     "@ddadaal/eslint-config": "1.9.0",
     "@types/eslint": "8.44.2",
