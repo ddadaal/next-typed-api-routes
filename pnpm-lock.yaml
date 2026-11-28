@@ -9,8 +9,8 @@ importers:
   .:
     devDependencies:
       '@changesets/changelog-git':
-        specifier: 0.1.14
-        version: 0.1.14
+        specifier: 1.0.1
+        version: 1.0.1
       '@changesets/cli':
         specifier: 2.26.2
         version: 2.26.2
@@ -536,6 +536,13 @@ packages:
       '@changesets/types': 5.2.1
     dev: true
 
+  /@changesets/changelog-git@1.0.1:
+    resolution: {integrity: sha512-FdS99KzRb4fVUCeMcXcIyUCa6wkUHVyIqFEd1joVERZ+dOVHV77Aq4owRKnfb5LDJ1Ank1ZY+9b0qJG6jGHDIg==}
+    engines: {node: ^22.11 || ^24 || >=26}
+    dependencies:
+      '@changesets/types': 7.1.0
+    dev: true
+
   /@changesets/cli@2.26.2:
     resolution: {integrity: sha512-dnWrJTmRR8bCHikJHl9b9HW3gXACCehz4OasrXpMp7sx97ECuBGGNjJhjPhdZNCvMy9mn4BWdplI323IbqsRig==}
     hasBin: true
@@ -673,6 +680,11 @@ packages:
 
   /@changesets/types@5.2.1:
     resolution: {integrity: sha512-myLfHbVOqaq9UtUKqR/nZA/OY7xFjQMdfgfqeZIBK4d0hA6pgxArvdv8M+6NUzzBsjWLOtvApv8YHr4qM+Kpfg==}
+    dev: true
+
+  /@changesets/types@7.1.0:
+    resolution: {integrity: sha512-UmpOTft7EIMCJRpLy5oy8rLNXdyhTBMMOaNi5t4B/2zEiluyys3pKc1jBXDE22SXmmwMgKtJ/m2qxgD/w1iJJA==}
+    engines: {node: ^22.11 || ^24 || >=26}
     dev: true
 
   /@changesets/write@0.2.3:
